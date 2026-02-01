@@ -4,6 +4,11 @@ info:
   version: 1.1.0
   description: 'API de facturación y caja: folios (billing.guest_folio), cargos (billing.folio_charge), pagos (billing.payment)
     y asignaciones (billing.payment_allocation). Incluye contrato para invoices (fase 2). Requiere header X-Property-Id.'
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
 - url: /api/v1
 tags:
@@ -749,10 +754,6 @@ components:
           - 'null'
           minimum: 1
           description: Número de folio. Si se omite, el backend puede asignarlo.
-        status:
-          type: string
-          enum: *id001
-          default: OPEN
         folioType:
           type: string
           enum: *id003
@@ -761,19 +762,19 @@ components:
           type: integer
           format: int32
           minimum: 1
-        openedBy:
-          type: integer
-          format: int64
-          minimum: 1
-          description: security.user_account.id
-        openedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
       required:
       - currencyId
-      - openedBy
+      oneOf:
+      - required:
+        - stayId
+        properties:
+          guestId:
+            type: 'null'
+      - required:
+        - guestId
+        properties:
+          stayId:
+            type: 'null'
     FolioPatchRequest:
       type: object
       additionalProperties: false
@@ -783,18 +784,9 @@ components:
           enum: *id001
         isActive:
           type: boolean
-        closedBy:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          minimum: 1
-        closedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
       minProperties: 1
+      description: Actualización parcial de folio (estado/activo). Campos de auditoría y de cierre son gestionados por el
+        servidor.
     FolioResponse:
       type: object
       additionalProperties: false
@@ -833,27 +825,52 @@ components:
         openedBy:
           type: integer
           format: int64
+          readOnly: true
         openedAt:
           type: string
           format: date-time
+          readOnly: true
         closedBy:
           type:
           - integer
           - 'null'
           format: int64
+          readOnly: true
         closedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - isActive
@@ -864,6 +881,7 @@ components:
       - openedBy
       - openedAt
       - createdAt
+      - createdBy
     FolioListResponse:
       type: object
       additionalProperties: false
@@ -985,14 +1003,17 @@ components:
           type: number
           multipleOf: 0.01
           description: Campo calculado en DB.
+          readOnly: true
         taxAmount:
           type: number
           multipleOf: 0.01
           description: Campo calculado en DB.
+          readOnly: true
         total:
           type: number
           multipleOf: 0.01
           description: Campo calculado en DB.
+          readOnly: true
         chargeDate:
           type: string
           format: date-time
@@ -1003,11 +1024,32 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - guestFolioId
@@ -1023,6 +1065,7 @@ components:
       - total
       - chargeDate
       - createdAt
+      - createdBy
     FolioChargeListResponse:
       type: object
       additionalProperties: false
@@ -1059,10 +1102,6 @@ components:
           type: number
           multipleOf: 0.01
           exclusiveMinimum: 0
-        status:
-          type: string
-          enum: *id004
-          default: POSTED
         paymentDate:
           type:
           - string
@@ -1124,12 +1163,14 @@ components:
           type: number
           multipleOf: 0.01
           description: 'Campo calculado en DB: original_amount * fx_rate'
+          readOnly: true
         status:
           type: string
           enum: *id004
         paymentDate:
           type: string
           format: date-time
+          readOnly: true
         transactionReference:
           type:
           - string
@@ -1141,11 +1182,32 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - isActive
@@ -1157,6 +1219,7 @@ components:
       - status
       - paymentDate
       - createdAt
+      - createdBy
     PaymentListResponse:
       type: object
       additionalProperties: false
@@ -1229,6 +1292,7 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
       required:
       - id
       - paymentId
@@ -1284,10 +1348,6 @@ components:
           type: number
           multipleOf: 0.01
           default: 0
-        status:
-          type: string
-          enum: *id006
-          default: DRAFT
         issuedAt:
           type:
           - string
@@ -1364,11 +1424,32 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - propertyId
@@ -1384,6 +1465,7 @@ components:
       - totalAmount
       - status
       - createdAt
+      - createdBy
     InvoiceListResponse:
       type: object
       additionalProperties: false
@@ -1471,11 +1553,32 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - invoiceId
@@ -1488,6 +1591,7 @@ components:
       - taxAmount
       - amount
       - createdAt
+      - createdBy
     InvoiceItemListResponse:
       type: object
       additionalProperties: false
@@ -1498,6 +1602,50 @@ components:
             $ref: '#/components/schemas/InvoiceItemResponse'
       required:
       - items
+    UserAccountId:
+      type: integer
+      format: int64
+      minimum: 1
+      description: security.user_account.id
+    AuditFields:
+      type: object
+      additionalProperties: false
+      properties:
+        createdBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          description: Usuario que creó el registro.
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha/hora de creación.
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
+        deletedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
+        deletedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          readOnly: true
+      required:
+      - createdAt
   responses:
     BadRequest:
       description: Solicitud inválida.
