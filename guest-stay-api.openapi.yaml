@@ -1,0 +1,1297 @@
+openapi: 3.1.0
+info:
+  title: Oriana ERP - Guest & Stay API
+  version: 1.1.0
+  description: API de huéspedes, reservas y estadías. Todas las operaciones son *scoped* a una propiedad vía el header **X-Property-Id**.
+servers:
+- url: /api/v1
+
+tags:
+- name: guests
+  description: Gestión de huéspedes y su información operativa.
+- name: reservations
+  description: Gestión de reservas y su ciclo de vida.
+- name: stays
+  description: Gestión de estadías / check-in & check-out.
+- name: stay-guests
+  description: Gestión de ocupantes de una estadía.
+
+paths:
+  /guests:
+    post:
+      tags:
+      - guests
+      operationId: createGuest
+      summary: Registrar un nuevo huésped
+      description: Registra un nuevo huésped asociándolo a una persona existente (**personId**) o creando una nueva persona
+        natural (**person**).
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestCreateRequest'
+      responses:
+        '201':
+          description: Huésped creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    get:
+      tags:
+      - guests
+      operationId: listGuests
+      summary: Buscar huéspedes
+      description: Devuelve huéspedes que coinciden con el criterio de búsqueda (nombre, documento, teléfono, email).
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - name: search
+        in: query
+        required: false
+        description: Texto libre para búsqueda.
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 100
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Lista de huéspedes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestListResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /guests/{guestId}:
+    get:
+      tags:
+      - guests
+      operationId: getGuest
+      summary: Obtener huésped
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/guestId'
+      responses:
+        '200':
+          description: Detalle del huésped.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    put:
+      tags:
+      - guests
+      operationId: updateGuest
+      summary: Actualizar huésped (reemplazo completo)
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/guestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestUpdateRequest'
+      responses:
+        '200':
+          description: Huésped actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    patch:
+      tags:
+      - guests
+      operationId: patchGuest
+      summary: Actualizar huésped (parcial)
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/guestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestPatchRequest'
+      responses:
+        '200':
+          description: Huésped actualizado parcialmente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /reservations:
+    post:
+      tags:
+      - reservations
+      operationId: createReservation
+      summary: Crear reserva
+      description: Crea una nueva reserva para la propiedad (hotel.reservation).
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCreateRequest'
+      responses:
+        '201':
+          description: Reserva creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    get:
+      tags:
+      - reservations
+      operationId: listReservations
+      summary: Listar reservas
+      description: Devuelve reservas de la propiedad. Permite filtrar por estado y rango de fechas (check-in estimado).
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - name: statusCode
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ReservationStatusCode'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/to'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Lista de reservas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationListResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /reservations/{reservationId}:
+    get:
+      tags:
+      - reservations
+      operationId: getReservation
+      summary: Obtener reserva
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/reservationId'
+      responses:
+        '200':
+          description: Detalle de la reserva.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    patch:
+      tags:
+      - reservations
+      operationId: patchReservation
+      summary: Actualizar reserva (parcial)
+      description: Permite modificar campos operativos (fechas estimadas, habitación, etc.) sin reemplazar todo el registro.
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/reservationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationPatchRequest'
+      responses:
+        '200':
+          description: Reserva actualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /reservations/{reservationId}/status:
+    patch:
+      tags:
+      - reservations
+      operationId: changeReservationStatus
+      summary: Cambiar estado de reserva
+      description: Actualiza el estado de una reserva de forma explícita. Las transiciones válidas dependen de las reglas
+        del negocio.
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/reservationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationStatusChangeRequest'
+      responses:
+        '200':
+          description: Reserva con estado actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays:
+    post:
+      tags:
+      - stays
+      operationId: createStay
+      summary: Registrar estadía (check-in)
+      description: Registra una estadía. Puede asociarse a una reserva (reservationId) o crearse como walk-in.
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StayCreateRequest'
+      responses:
+        '201':
+          description: Estadía creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    get:
+      tags:
+      - stays
+      operationId: listStays
+      summary: Listar estadías
+      description: Devuelve estadías de la propiedad. Permite filtrar por estado y rango de fechas (check-in real).
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - name: statusCode
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/StayStatusCode'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/to'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Lista de estadías.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayListResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays/{stayId}:
+    get:
+      tags:
+      - stays
+      operationId: getStay
+      summary: Obtener estadía
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      responses:
+        '200':
+          description: Detalle de la estadía.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays/{stayId}/status:
+    patch:
+      tags:
+      - stays
+      operationId: changeStayStatus
+      summary: Cambiar estado de estadía
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StayStatusChangeRequest'
+      responses:
+        '200':
+          description: Estadía con estado actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays/{stayId}/checkout:
+    post:
+      tags:
+      - stays
+      operationId: checkoutStay
+      summary: Check-out de estadía
+      description: Finaliza una estadía (check-out) y la deja en estado CLOSED, registrando la fecha/hora de salida.
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '204':
+          description: Check-out ejecutado.
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays/{stayId}/guests:
+    get:
+      tags:
+      - stay-guests
+      operationId: listStayGuests
+      summary: Listar huéspedes de una estadía
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      responses:
+        '200':
+          description: Lista de huéspedes asociados a la estadía.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayGuestListResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+    post:
+      tags:
+      - stay-guests
+      operationId: addStayGuest
+      summary: Agregar huésped a una estadía
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StayGuestAddRequest'
+      responses:
+        '201':
+          description: Huésped asociado a la estadía.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StayGuestResponse'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /stays/{stayId}/guests/{guestId}:
+    delete:
+      tags:
+      - stay-guests
+      operationId: removeStayGuest
+      summary: Desvincular huésped de una estadía
+      parameters:
+      - $ref: '#/components/parameters/XPropertyId'
+      - $ref: '#/components/parameters/stayId'
+      - $ref: '#/components/parameters/guestId'
+      responses:
+        '204':
+          description: Huésped desvinculado.
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    XPropertyId:
+      name: X-Property-Id
+      in: header
+      required: true
+      description: Identificador de la propiedad/hotel (hotel.property.id).
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    guestId:
+      name: guestId
+      in: path
+      required: true
+      description: Identificador del huésped (hotel.guest.id).
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    reservationId:
+      name: reservationId
+      in: path
+      required: true
+      description: Identificador de la reserva (hotel.reservation.id).
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    stayId:
+      name: stayId
+      in: path
+      required: true
+      description: Identificador de la estadía (hotel.stay.id).
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    limit:
+      name: limit
+      in: query
+      required: false
+      description: Máximo de registros a retornar.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 50
+    offset:
+      name: offset
+      in: query
+      required: false
+      description: Cantidad de registros a omitir antes de retornar.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+    from:
+      name: from
+      in: query
+      required: false
+      description: Fecha desde (inclusive).
+      schema:
+        type: string
+        format: date
+    to:
+      name: to
+      in: query
+      required: false
+      description: Fecha hasta (inclusive).
+      schema:
+        type: string
+        format: date
+  responses:
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error400:
+      description: Solicitud inválida.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: No autenticado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error403:
+      description: No autorizado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error404:
+      description: No encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error409:
+      description: Conflicto.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error422:
+      description: Error de validación.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        error:
+          type: string
+          description: Código de error.
+        message:
+          type: string
+          description: Mensaje para humanos.
+        details:
+          type:
+          - array
+          - 'null'
+          description: Detalles por campo u otros datos útiles.
+          items:
+            type: object
+            additionalProperties: true
+        traceId:
+          type:
+          - string
+          - 'null'
+          description: "Id de trazabilidad (para logs)."
+      required:
+      - error
+      - message
+    Id64:
+      type: integer
+      format: int64
+      minimum: 1
+    Date:
+      type: string
+      format: date
+    DateTime:
+      type: string
+      format: date-time
+    ReservationStatusCode:
+      type: string
+      enum:
+      - CREATED
+      - CONFIRMED
+      - CANCELLED
+      - NO_SHOW
+      - CHECKED_IN
+      description: "Código de estado (catalog.reservation_status.code)."
+    StayStatusCode:
+      type: string
+      enum:
+      - ACTIVE
+      - CLOSED
+      - CANCELLED
+      description: "Código de estado (catalog.stay_status.code)."
+    PersonDocumentCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        documentTypeId:
+          $ref: '#/components/schemas/Id64'
+          description: "catalog.document_type.id"
+        documentNumber:
+          type: string
+          minLength: 1
+          maxLength: 30
+        isPrimary:
+          type: boolean
+          default: false
+        issuedDate:
+          anyOf:
+          - $ref: '#/components/schemas/Date'
+          - type: 'null'
+        expirationDate:
+          anyOf:
+          - $ref: '#/components/schemas/Date'
+          - type: 'null'
+      required:
+      - documentTypeId
+      - documentNumber
+    NaturalPersonCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        firstSurname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        secondSurname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        birthDate:
+          $ref: '#/components/schemas/Date'
+        genderId:
+          type: integer
+          format: int32
+          minimum: 1
+          description: catalog.gender.id
+      required:
+      - name
+      - firstSurname
+      - secondSurname
+      - birthDate
+      - genderId
+    PersonCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 150
+        secondaryEmail:
+          anyOf:
+          - type: string
+            format: email
+            maxLength: 150
+          - type: 'null'
+        mobilePhone:
+          anyOf:
+          - type: string
+            maxLength: 30
+          - type: 'null'
+        landlinePhone:
+          anyOf:
+          - type: string
+            maxLength: 30
+          - type: 'null'
+        countryId:
+          type: integer
+          format: int32
+          minimum: 1
+          description: catalog.country.id
+        postalCode:
+          anyOf:
+          - type: string
+            maxLength: 10
+          - type: 'null'
+        primaryAddressLine:
+          type: string
+          minLength: 1
+        primaryAddressLine2:
+          anyOf:
+          - type: string
+          - type: 'null'
+        naturalPerson:
+          $ref: '#/components/schemas/NaturalPersonCreate'
+        documents:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/PersonDocumentCreate'
+      required:
+      - email
+      - countryId
+      - primaryAddressLine
+      - naturalPerson
+    GuestCreateRequest:
+      type: object
+      additionalProperties: false
+      description: Crea un huésped asociándolo a una persona existente o creando una nueva persona natural.
+      properties:
+        personId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+          description: core.person.id existente.
+        person:
+          anyOf:
+          - $ref: '#/components/schemas/PersonCreate'
+          - type: 'null'
+          description: Si no existe la persona, permite crearla en la misma operación.
+        notes:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+        isBlacklisted:
+          type: boolean
+          default: false
+        blacklistReason:
+          anyOf:
+          - type: string
+          - type: 'null'
+      anyOf:
+      - required:
+        - personId
+      - required:
+        - person
+    GuestUpdateRequest:
+      type: object
+      additionalProperties: false
+      description: Actualiza (PUT) un huésped. Si envías person, debe ser la misma persona o una nueva asignación según reglas
+        del negocio.
+      properties:
+        personId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+          description: core.person.id existente.
+        person:
+          anyOf:
+          - $ref: '#/components/schemas/PersonCreate'
+          - type: 'null'
+          description: Si no existe la persona, permite crearla en la misma operación.
+        notes:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+        isBlacklisted:
+          type: boolean
+          default: false
+        blacklistReason:
+          anyOf:
+          - type: string
+          - type: 'null'
+      anyOf:
+      - required:
+        - personId
+      - required:
+        - person
+    GuestPatchRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        notes:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+        isActive:
+          type: boolean
+        isBlacklisted:
+          type: boolean
+        blacklistReason:
+          anyOf:
+          - type: string
+          - type: 'null'
+    GuestResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Id64'
+        personId:
+          $ref: '#/components/schemas/Id64'
+        notes:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+        isActive:
+          type: boolean
+        isBlacklisted:
+          type: boolean
+        blacklistReason:
+          anyOf:
+          - type: string
+          - type: 'null'
+      required:
+      - id
+      - personId
+      - isActive
+      - isBlacklisted
+    PagedResponseMeta:
+      type: object
+      additionalProperties: false
+      properties:
+        limit:
+          type: integer
+          format: int32
+          minimum: 1
+        offset:
+          type: integer
+          format: int32
+          minimum: 0
+        total:
+          type: integer
+          format: int64
+          minimum: 0
+      required:
+      - limit
+      - offset
+      - total
+    GuestListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuestResponse'
+        meta:
+          $ref: '#/components/schemas/PagedResponseMeta'
+      required:
+      - items
+      - meta
+    ReservationCreateRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        guestId:
+          $ref: '#/components/schemas/Id64'
+          description: "hotel.guest.id (huésped principal)."
+        roomId:
+          $ref: '#/components/schemas/Id64'
+          description: "hotel.room.id"
+        priceListId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+          description: "hotel.price_list.id (opcional)."
+        checkInEstimated:
+          $ref: '#/components/schemas/Date'
+        checkOutEstimated:
+          $ref: '#/components/schemas/Date'
+        statusCode:
+          $ref: '#/components/schemas/ReservationStatusCode'
+      required:
+      - guestId
+      - roomId
+      - checkInEstimated
+      - checkOutEstimated
+    ReservationPatchRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        isActive:
+          type: boolean
+        guestId:
+          $ref: '#/components/schemas/Id64'
+        roomId:
+          $ref: '#/components/schemas/Id64'
+        priceListId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+        checkInEstimated:
+          $ref: '#/components/schemas/Date'
+        checkOutEstimated:
+          $ref: '#/components/schemas/Date'
+    ReservationStatusChangeRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          $ref: '#/components/schemas/ReservationStatusCode'
+        reason:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+      required:
+      - statusCode
+    ReservationResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Id64'
+        propertyId:
+          $ref: '#/components/schemas/Id64'
+        guestId:
+          $ref: '#/components/schemas/Id64'
+        priceListId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+        roomId:
+          $ref: '#/components/schemas/Id64'
+        checkInEstimated:
+          $ref: '#/components/schemas/Date'
+        checkOutEstimated:
+          $ref: '#/components/schemas/Date'
+        statusCode:
+          $ref: '#/components/schemas/ReservationStatusCode'
+        isActive:
+          type: boolean
+        createdAt:
+          anyOf:
+          - $ref: '#/components/schemas/DateTime'
+          - type: 'null'
+        updatedAt:
+          anyOf:
+          - $ref: '#/components/schemas/DateTime'
+          - type: 'null'
+      required:
+      - id
+      - propertyId
+      - guestId
+      - roomId
+      - checkInEstimated
+      - checkOutEstimated
+      - statusCode
+      - isActive
+    ReservationListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationResponse'
+        meta:
+          $ref: '#/components/schemas/PagedResponseMeta'
+      required:
+      - items
+      - meta
+    StayCreateRequest:
+      type: object
+      additionalProperties: false
+      description: Crea una estadía (check-in). Si se envía reservationId, se considera **no walk-in**. Si no se envía, debe
+        ser walk-in.
+      properties:
+        reservationId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+        isWalkIn:
+          type: boolean
+          default: false
+        roomId:
+          $ref: '#/components/schemas/Id64'
+        primaryGuestId:
+          $ref: '#/components/schemas/Id64'
+          description: hotel.guest.id (se insertará en hotel.stay_guest con is_primary=true).
+        numGuests:
+          anyOf:
+          - type: integer
+            format: int32
+            minimum: 1
+          - type: 'null'
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+        statusCode:
+          $ref: '#/components/schemas/StayStatusCode'
+      required:
+      - roomId
+      - primaryGuestId
+    StayStatusChangeRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          allOf:
+          - $ref: '#/components/schemas/StayStatusCode'
+      required:
+      - statusCode
+    CheckoutRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        checkOutActual:
+          anyOf:
+          - $ref: '#/components/schemas/DateTime'
+          - type: 'null'
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+    StayResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/Id64'
+        propertyId:
+          $ref: '#/components/schemas/Id64'
+        reservationId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+        isWalkIn:
+          type: boolean
+        roomId:
+          $ref: '#/components/schemas/Id64'
+        statusCode:
+          $ref: '#/components/schemas/StayStatusCode'
+        checkInActual:
+          $ref: '#/components/schemas/DateTime'
+        checkOutActual:
+          anyOf:
+          - $ref: '#/components/schemas/DateTime'
+          - type: 'null'
+        numGuests:
+          anyOf:
+          - type: integer
+            format: int32
+          - type: 'null'
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+        primaryGuestId:
+          anyOf:
+          - $ref: '#/components/schemas/Id64'
+          - type: 'null'
+      required:
+      - id
+      - propertyId
+      - isWalkIn
+      - roomId
+      - statusCode
+      - checkInActual
+    StayListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StayResponse'
+        meta:
+          $ref: '#/components/schemas/PagedResponseMeta'
+      required:
+      - items
+      - meta
+    StayGuestAddRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        guestId:
+          $ref: '#/components/schemas/Id64'
+        isPrimary:
+          type: boolean
+          default: false
+        documentVerified:
+          type: boolean
+          default: false
+      required:
+      - guestId
+    StayGuestResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        stayId:
+          $ref: '#/components/schemas/Id64'
+        guestId:
+          $ref: '#/components/schemas/Id64'
+        isActive:
+          type: boolean
+        isPrimary:
+          type: boolean
+        documentVerified:
+          type: boolean
+      required:
+      - stayId
+      - guestId
+      - isActive
+      - isPrimary
+      - documentVerified
+    StayGuestListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StayGuestResponse'
+      required:
+      - items
+security:
+- bearerAuth: []
