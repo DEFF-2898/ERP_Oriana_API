@@ -1,10 +1,15 @@
 openapi: 3.1.0
 info:
   title: Oriana ERP - Catalog API
-  version: 1.1.0
+  version: 1.2.0
   description:
-    API de catálogos de referencia (schema catalog). Expone listas de valores usados por otras APIs (People, Staff,
-    Inventory, Guest/Stay, Billing, Pricing).
+    API de catálogos de referencia (schema `catalog`). Provee listas de valores usados por otras APIs (People,
+    Staff, Inventory, Guest/Stay, Billing, Pricing).
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:
@@ -325,6 +330,7 @@ components:
         id:
           type: integer
           format: int32
+          minimum: 1
         code:
           type: string
         name:
@@ -345,6 +351,7 @@ components:
       enum:
         - NATURAL
         - LEGAL
+      description: catalog.person_type.code
     DocumentTypeCode:
       type: string
       enum:
@@ -352,6 +359,7 @@ components:
         - PASSPORT
         - CE
         - RUC
+      description: catalog.document_type.code
     GenderCode:
       type: string
       enum:
@@ -359,6 +367,7 @@ components:
         - F
         - O
         - N
+      description: catalog.gender.code
     DepartmentCode:
       type: string
       enum:
@@ -370,6 +379,7 @@ components:
         - FINANCE
         - IT
         - SECURITY
+      description: catalog.department.code
     EmployeeStatusCode:
       type: string
       enum:
@@ -378,6 +388,7 @@ components:
         - ON_LEAVE
         - SUSPENDED
         - TERMINATED
+      description: catalog.employee_status.code
     ContractTypeCode:
       type: string
       enum:
@@ -387,6 +398,7 @@ components:
         - TEMPORARY
         - INTERNSHIP
         - SERVICE
+      description: catalog.contract_type.code
     JobPositionCode:
       type: string
       enum:
@@ -394,6 +406,7 @@ components:
         - RECEPTIONIST
         - HOUSEKEEPING
         - MAINTENANCE
+      description: catalog.job_position.code
     RoomStatusCode:
       type: string
       enum:
@@ -402,6 +415,7 @@ components:
         - CLEANING
         - MAINTENANCE
         - OUT_OF_SERVICE
+      description: catalog.room_status.code
     ReservationStatusCode:
       type: string
       enum:
@@ -410,12 +424,14 @@ components:
         - CANCELLED
         - NO_SHOW
         - CHECKED_IN
+      description: catalog.reservation_status.code
     StayStatusCode:
       type: string
       enum:
         - ACTIVE
         - CLOSED
         - CANCELLED
+      description: catalog.stay_status.code
     PaymentMethodCode:
       type: string
       enum:
@@ -424,6 +440,7 @@ components:
         - TRANSFER
         - YAPE
         - PLIN
+      description: catalog.payment_method.code
     ServiceCategoryCode:
       type: string
       enum:
@@ -433,6 +450,7 @@ components:
         - LAUNDRY
         - TRANSPORT
         - EXTRA
+      description: catalog.service_category.code
     ServiceCode:
       type: string
       enum:
@@ -445,6 +463,7 @@ components:
         - LAUNDRY
         - TRANSPORT
         - PENALTY
+      description: catalog.service.code
     CurrencyCode:
       type: string
       enum:
@@ -463,6 +482,7 @@ components:
         - AUD
         - CHF
         - INR
+      description: catalog.currency.code (ISO 4217)
     CountryIsoAlpha2:
       type: string
       enum:
@@ -481,107 +501,126 @@ components:
         - GB
         - JP
         - AU
+      description: catalog.country.iso_alpha2 (ISO 3166-1 alpha-2)
     PersonType:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/PersonTypeCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/PersonTypeCode"
     DocumentType:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/DocumentTypeCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/DocumentTypeCode"
     Gender:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/GenderCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/GenderCode"
     Department:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/DepartmentCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/DepartmentCode"
     EmployeeStatus:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/EmployeeStatusCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/EmployeeStatusCode"
     ContractType:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/ContractTypeCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ContractTypeCode"
     JobPosition:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/JobPositionCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/JobPositionCode"
     RoomStatus:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/RoomStatusCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/RoomStatusCode"
     ReservationStatus:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/ReservationStatusCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ReservationStatusCode"
     StayStatus:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/StayStatusCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/StayStatusCode"
     PaymentMethod:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/PaymentMethodCode"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/PaymentMethodCode"
     ServiceCategory:
       allOf:
         - $ref: "#/components/schemas/CatalogItem"
-      properties:
-        code:
-          $ref: "#/components/schemas/ServiceCategoryCode"
-    Service:
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ServiceCategoryCode"
+    Currency:
       type: object
       additionalProperties: false
       properties:
         id:
           type: integer
           format: int32
+          minimum: 1
         code:
-          $ref: "#/components/schemas/ServiceCode"
+          $ref: "#/components/schemas/CurrencyCode"
         name:
           type: string
-        description:
+        symbol:
           type:
             - string
             - "null"
-        categoryId:
-          type: integer
-          format: int32
-        category:
-          anyOf:
-            - $ref: "#/components/schemas/ServiceCategory"
-            - type: "null"
+          maxLength: 8
         isActive:
           type: boolean
       required:
         - id
         - code
         - name
-        - categoryId
         - isActive
     Country:
       type: object
@@ -590,6 +629,7 @@ components:
         id:
           type: integer
           format: int32
+          minimum: 1
         name:
           type: string
         isoAlpha2:
@@ -614,38 +654,38 @@ components:
         - name
         - isoAlpha2
         - isActive
-    Currency:
+    Service:
       type: object
       additionalProperties: false
       properties:
         id:
           type: integer
           format: int32
+          minimum: 1
         code:
-          $ref: "#/components/schemas/CurrencyCode"
+          $ref: "#/components/schemas/ServiceCode"
         name:
           type: string
-        symbol:
+        description:
           type:
             - string
             - "null"
-          maxLength: 8
+        categoryId:
+          type: integer
+          format: int32
+          minimum: 1
+        category:
+          anyOf:
+            - $ref: "#/components/schemas/ServiceCategory"
+            - type: "null"
         isActive:
           type: boolean
       required:
         - id
         - code
         - name
+        - categoryId
         - isActive
-    ListResponseBase:
-      type: object
-      additionalProperties: false
-      properties:
-        items:
-          type: array
-          items: {}
-      required:
-        - items
     PersonTypeListResponse:
       type: object
       additionalProperties: false
