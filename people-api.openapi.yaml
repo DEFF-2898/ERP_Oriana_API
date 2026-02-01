@@ -600,7 +600,7 @@ components:
           - legalEntity
     PersonUpdateRequest:
       allOf:
-        - $ref: '#/components/schemas/PersonCreateRequest'
+      - $ref: '#/components/schemas/PersonCreateRequest'
     PersonPatchRequest:
       type: object
       additionalProperties: false
@@ -757,33 +757,36 @@ components:
           required:
           - legalName
         createdBy:
-          type:
-          - integer
-          - 'null'
-          format: int64
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedBy:
-          type:
-          - integer
-          - 'null'
-          format: int64
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
         deletedBy:
-          type:
-          - integer
-          - 'null'
-          format: int64
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
         deletedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
       required:
       - id
       - isActive
@@ -835,7 +838,7 @@ components:
       - documentNumber
     PersonDocumentUpdateRequest:
       allOf:
-        - $ref: '#/components/schemas/PersonDocumentCreateRequest'
+      - $ref: '#/components/schemas/PersonDocumentCreateRequest'
     PersonDocumentPatchRequest:
       type: object
       additionalProperties: false
@@ -899,11 +902,22 @@ components:
         createdAt:
           type: string
           format: date-time
+          readOnly: true
         updatedAt:
           type:
           - string
           - 'null'
           format: date-time
+          readOnly: true
+        createdBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          readOnly: true
+        updatedBy:
+          anyOf:
+          - $ref: '#/components/schemas/UserAccountId'
+          - type: 'null'
+          readOnly: true
       required:
       - id
       - isActive
@@ -1057,6 +1071,11 @@ components:
       required:
       - code
       - message
+    UserAccountId:
+      type: integer
+      format: int64
+      minimum: 1
+      description: security.user_account.id
   responses:
     BadRequest:
       description: Solicitud inválida.
