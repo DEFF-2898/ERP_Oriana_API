@@ -2,155 +2,159 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Property API
   version: 1.1.0
-  description: API para administración de propiedades/sedes (hotel.property). Permite crear y administrar propiedades con
+  description:
+    API para administración de propiedades/sedes (hotel.property). Permite crear y administrar propiedades con
     datos generales, país, moneda y dirección.
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: properties
-  description: Gestión de propiedades (hotel.property).
+  - name: properties
+    description: Gestión de propiedades (hotel.property).
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /properties:
     post:
       tags:
-      - properties
+        - properties
       operationId: createProperty
       summary: Crear propiedad
-      description: Crea una nueva propiedad en el sistema, registrando su información legal (personId), ubicación, moneda
+      description:
+        Crea una nueva propiedad en el sistema, registrando su información legal (personId), ubicación, moneda
         y datos generales.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PropertyCreateRequest'
+              $ref: "#/components/schemas/PropertyCreateRequest"
       responses:
-        '201':
+        "201":
           description: Propiedad creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PropertyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - properties
+        - properties
       operationId: listProperties
       summary: Listar propiedades
       description: Devuelve el listado de propiedades registradas en el sistema.
       parameters:
-      - $ref: '#/components/parameters/ActiveQuery'
-      - $ref: '#/components/parameters/SearchQuery'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/ActiveQuery"
+        - $ref: "#/components/parameters/SearchQuery"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de propiedades.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PropertyListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /properties/{propertyId}:
     get:
       tags:
-      - properties
+        - properties
       operationId: getProperty
       summary: Obtener propiedad
       description: Devuelve el detalle completo de una propiedad específica.
       parameters:
-      - $ref: '#/components/parameters/PropertyId'
+        - $ref: "#/components/parameters/PropertyId"
       responses:
-        '200':
+        "200":
           description: Detalle de propiedad.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PropertyResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - properties
+        - properties
       operationId: updateProperty
       summary: Actualizar propiedad (reemplazo)
-      description: Actualiza de forma completa la información de una propiedad existente, reemplazando los datos previamente
+      description:
+        Actualiza de forma completa la información de una propiedad existente, reemplazando los datos previamente
         registrados.
       parameters:
-      - $ref: '#/components/parameters/PropertyId'
+        - $ref: "#/components/parameters/PropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PropertyUpdateRequest'
+              $ref: "#/components/schemas/PropertyUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Propiedad actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PropertyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - properties
+        - properties
       operationId: patchProperty
       summary: Actualizar propiedad (parcial)
-      description: Actualiza parcialmente una propiedad, permitiendo modificar estado, descripción o dirección sin reemplazar
+      description:
+        Actualiza parcialmente una propiedad, permitiendo modificar estado, descripción o dirección sin reemplazar
         el registro completo.
       parameters:
-      - $ref: '#/components/parameters/PropertyId'
+        - $ref: "#/components/parameters/PropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PropertyPatchRequest'
+              $ref: "#/components/schemas/PropertyPatchRequest"
       responses:
-        '200':
+        "200":
           description: Propiedad actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PropertyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -213,8 +217,8 @@ components:
           maxLength: 100
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         countryId:
           type: integer
           format: int32
@@ -231,14 +235,14 @@ components:
           type: boolean
           default: true
       required:
-      - personId
-      - name
-      - countryId
-      - currencyId
-      - address
+        - personId
+        - name
+        - countryId
+        - currencyId
+        - address
     PropertyUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/PropertyCreateRequest'
+        - $ref: "#/components/schemas/PropertyCreateRequest"
     PropertyPatchRequest:
       type: object
       additionalProperties: false
@@ -252,8 +256,8 @@ components:
           maxLength: 100
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         countryId:
           type: integer
           format: int32
@@ -283,8 +287,8 @@ components:
           type: string
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         country:
           type: object
           additionalProperties: false
@@ -294,13 +298,13 @@ components:
               format: int32
             isoCode:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
             name:
               type: string
           required:
-          - id
-          - name
+            - id
+            - name
         currency:
           type: object
           additionalProperties: false
@@ -314,51 +318,51 @@ components:
               type: string
             symbol:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
           required:
-          - id
-          - code
-          - name
+            - id
+            - code
+            - name
         address:
           type: string
         createdBy:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         createdAt:
           type: string
           format: date-time
         updatedBy:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
         deletedBy:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         deletedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - isActive
-      - personId
-      - name
-      - country
-      - currency
-      - address
-      - createdAt
+        - id
+        - isActive
+        - personId
+        - name
+        - country
+        - currency
+        - address
+        - createdAt
     PropertyListResponse:
       type: object
       additionalProperties: false
@@ -366,12 +370,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PropertyResponse'
+            $ref: "#/components/schemas/PropertyResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -386,9 +390,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -399,41 +403,41 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto (p.ej. nombre duplicado según regla de negocio).
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

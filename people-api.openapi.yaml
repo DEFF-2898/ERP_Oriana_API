@@ -2,24 +2,25 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - People API
   version: 1.1.0
-  description: API para gestión de personas (core.person), detalles por tipo (core.natural_person, core.legal_entity), documentos
+  description:
+    API para gestión de personas (core.person), detalles por tipo (core.natural_person, core.legal_entity), documentos
     (core.person_document) y representantes legales (core.legal_representative).
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: people
-  description: Personas naturales y jurídicas.
-- name: person-documents
-  description: Documentos de identificación de una persona.
-- name: legal-representatives
-  description: Representantes legales de personas jurídicas.
+  - name: people
+    description: Personas naturales y jurídicas.
+  - name: person-documents
+    description: Documentos de identificación de una persona.
+  - name: legal-representatives
+    description: Representantes legales de personas jurídicas.
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /people:
     post:
       tags:
-      - people
+        - people
       operationId: createPerson
       summary: Crear persona
       description: Crea una nueva persona (natural o jurídica) junto con sus datos específicos según tipo.
@@ -28,364 +29,366 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonCreateRequest'
+              $ref: "#/components/schemas/PersonCreateRequest"
       responses:
-        '201':
+        "201":
           description: Persona creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - people
+        - people
       operationId: listPeople
       summary: Listar personas
       description: Devuelve una lista de personas filtradas por tipo y/o criterio de búsqueda.
       parameters:
-      - $ref: '#/components/parameters/PersonTypeQuery'
-      - $ref: '#/components/parameters/SearchQuery'
-      - $ref: '#/components/parameters/ActiveQuery'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/PersonTypeQuery"
+        - $ref: "#/components/parameters/SearchQuery"
+        - $ref: "#/components/parameters/ActiveQuery"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de personas.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /people/{personId}:
     get:
       tags:
-      - people
+        - people
       operationId: getPerson
       summary: Obtener persona
       description: Devuelve el detalle completo de una persona, incluyendo datos asociados según su tipo.
       parameters:
-      - $ref: '#/components/parameters/PersonId'
+        - $ref: "#/components/parameters/PersonId"
       responses:
-        '200':
+        "200":
           description: Detalle de persona.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - people
+        - people
       operationId: updatePerson
       summary: Actualizar persona (reemplazo)
       description: Actualiza de forma completa una persona existente.
       parameters:
-      - $ref: '#/components/parameters/PersonId'
+        - $ref: "#/components/parameters/PersonId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonUpdateRequest'
+              $ref: "#/components/schemas/PersonUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Persona actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - people
+        - people
       operationId: patchPerson
       summary: Actualizar persona (parcial)
       description: Actualiza parcialmente una persona (contacto, dirección, estado, etc.).
       parameters:
-      - $ref: '#/components/parameters/PersonId'
+        - $ref: "#/components/parameters/PersonId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonPatchRequest'
+              $ref: "#/components/schemas/PersonPatchRequest"
       responses:
-        '200':
+        "200":
           description: Persona actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /people/{personId}/documents:
     get:
       tags:
-      - person-documents
+        - person-documents
       operationId: listPersonDocuments
       summary: Listar documentos de la persona
       description: Devuelve el listado de documentos asociados a una persona.
       parameters:
-      - $ref: '#/components/parameters/PersonId'
-      - $ref: '#/components/parameters/ActiveQuery'
+        - $ref: "#/components/parameters/PersonId"
+        - $ref: "#/components/parameters/ActiveQuery"
       responses:
-        '200':
+        "200":
           description: Listado de documentos.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDocumentListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonDocumentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - person-documents
+        - person-documents
       operationId: createPersonDocument
       summary: Crear documento
       description: Registra un nuevo documento de identificación para una persona. Existe unicidad por (documentType, documentNumber).
       parameters:
-      - $ref: '#/components/parameters/PersonId'
+        - $ref: "#/components/parameters/PersonId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonDocumentCreateRequest'
+              $ref: "#/components/schemas/PersonDocumentCreateRequest"
       responses:
-        '201':
+        "201":
           description: Documento creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDocumentResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonDocumentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /people/{personId}/documents/{documentId}:
     put:
       tags:
-      - person-documents
+        - person-documents
       operationId: updatePersonDocument
       summary: Actualizar documento (reemplazo)
       description: Actualiza completamente un documento existente asociado a una persona.
       parameters:
-      - $ref: '#/components/parameters/PersonId'
-      - $ref: '#/components/parameters/DocumentId'
+        - $ref: "#/components/parameters/PersonId"
+        - $ref: "#/components/parameters/DocumentId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonDocumentUpdateRequest'
+              $ref: "#/components/schemas/PersonDocumentUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Documento actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDocumentResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonDocumentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - person-documents
+        - person-documents
       operationId: patchPersonDocument
       summary: Actualizar documento (parcial)
       description: Actualiza parcialmente un documento (isActive, fechas, isPrimary).
       parameters:
-      - $ref: '#/components/parameters/PersonId'
-      - $ref: '#/components/parameters/DocumentId'
+        - $ref: "#/components/parameters/PersonId"
+        - $ref: "#/components/parameters/DocumentId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonDocumentPatchRequest'
+              $ref: "#/components/schemas/PersonDocumentPatchRequest"
       responses:
-        '200':
+        "200":
           description: Documento actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDocumentResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonDocumentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /people/{personId}/documents/{documentId}/make-primary:
     post:
       tags:
-      - person-documents
+        - person-documents
       operationId: makePrimaryDocument
       summary: Marcar documento como principal
-      description: Marca un documento como principal para la persona, asegurando que no existan múltiples documentos principales
+      description:
+        Marca un documento como principal para la persona, asegurando que no existan múltiples documentos principales
         activos.
       parameters:
-      - $ref: '#/components/parameters/PersonId'
-      - $ref: '#/components/parameters/DocumentId'
+        - $ref: "#/components/parameters/PersonId"
+        - $ref: "#/components/parameters/DocumentId"
       responses:
-        '200':
+        "200":
           description: Documento marcado como principal.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDocumentResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PersonDocumentResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /legal-entities/{legalEntityPersonId}/representatives:
     get:
       tags:
-      - legal-representatives
+        - legal-representatives
       operationId: listLegalRepresentatives
       summary: Listar representantes legales
       description: Devuelve el listado de representantes legales asociados a una persona jurídica.
       parameters:
-      - $ref: '#/components/parameters/LegalEntityPersonId'
-      - $ref: '#/components/parameters/ActiveQuery'
+        - $ref: "#/components/parameters/LegalEntityPersonId"
+        - $ref: "#/components/parameters/ActiveQuery"
       responses:
-        '200':
+        "200":
           description: Listado de representantes.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LegalRepresentativeListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/LegalRepresentativeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - legal-representatives
+        - legal-representatives
       operationId: createLegalRepresentative
       summary: Crear representante legal
       description: Vincula una persona natural existente como representante legal de una persona jurídica.
       parameters:
-      - $ref: '#/components/parameters/LegalEntityPersonId'
+        - $ref: "#/components/parameters/LegalEntityPersonId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LegalRepresentativeCreateRequest'
+              $ref: "#/components/schemas/LegalRepresentativeCreateRequest"
       responses:
-        '201':
+        "201":
           description: Representante creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LegalRepresentativeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/LegalRepresentativeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /legal-entities/{legalEntityPersonId}/representatives/{representativeId}/deactivate:
     patch:
       tags:
-      - legal-representatives
+        - legal-representatives
       operationId: deactivateLegalRepresentative
       summary: Desactivar representante legal
-      description: Desactiva la relación de representante legal, manteniendo historial. Generalmente marca isActive=false
+      description:
+        Desactiva la relación de representante legal, manteniendo historial. Generalmente marca isActive=false
         y puede setear endDate.
       parameters:
-      - $ref: '#/components/parameters/LegalEntityPersonId'
-      - $ref: '#/components/parameters/RepresentativeId'
+        - $ref: "#/components/parameters/LegalEntityPersonId"
+        - $ref: "#/components/parameters/RepresentativeId"
       requestBody:
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LegalRepresentativeDeactivateRequest'
+              $ref: "#/components/schemas/LegalRepresentativeDeactivateRequest"
       responses:
-        '200':
+        "200":
           description: Representante desactivado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LegalRepresentativeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/LegalRepresentativeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -432,8 +435,8 @@ components:
       schema:
         type: string
         enum: &id001
-        - NATURAL
-        - LEGAL
+          - NATURAL
+          - LEGAL
       description: Filtra por tipo de persona (catalog.person_type.code).
     SearchQuery:
       name: search
@@ -474,42 +477,42 @@ components:
     GenderCode:
       type: string
       enum:
-      - M
-      - F
-      - O
-      - N
+        - M
+        - F
+        - O
+        - N
     DocumentTypeCode:
       type: string
       enum:
-      - DNI
-      - PASSPORT
-      - CE
-      - RUC
+        - DNI
+        - PASSPORT
+        - CE
+        - RUC
     PersonBase:
       type: object
       additionalProperties: false
       properties:
         personType:
-          $ref: '#/components/schemas/PersonTypeCode'
+          $ref: "#/components/schemas/PersonTypeCode"
         email:
           type: string
           format: email
           maxLength: 150
         secondaryEmail:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: email
           maxLength: 150
         mobilePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 30
         landlinePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 30
         countryId:
           type: integer
@@ -517,20 +520,20 @@ components:
           minimum: 1
         postalCode:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 10
         primaryAddressLine:
           type: string
         primaryAddressLine2:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
       required:
-      - personType
-      - email
-      - countryId
-      - primaryAddressLine
+        - personType
+        - email
+        - countryId
+        - primaryAddressLine
     NaturalPersonData:
       type: object
       additionalProperties: false
@@ -548,13 +551,13 @@ components:
           type: string
           format: date
         genderCode:
-          $ref: '#/components/schemas/GenderCode'
+          $ref: "#/components/schemas/GenderCode"
       required:
-      - name
-      - firstSurname
-      - secondSurname
-      - birthDate
-      - genderCode
+        - name
+        - firstSurname
+        - secondSurname
+        - birthDate
+        - genderCode
     LegalEntityData:
       type: object
       additionalProperties: false
@@ -564,43 +567,43 @@ components:
           maxLength: 150
         tradeName:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 150
         foundationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
       required:
-      - legalName
+        - legalName
     PersonCreateRequest:
       allOf:
-      - $ref: '#/components/schemas/PersonBase'
-      - type: object
-        additionalProperties: false
-        properties:
-          isActive:
-            type: boolean
-            default: true
-          naturalPerson:
-            $ref: '#/components/schemas/NaturalPersonData'
-          legalEntity:
-            $ref: '#/components/schemas/LegalEntityData'
-        oneOf:
-        - properties:
-            personType:
-              const: NATURAL
-          required:
-          - naturalPerson
-        - properties:
-            personType:
-              const: LEGAL
-          required:
-          - legalEntity
+        - $ref: "#/components/schemas/PersonBase"
+        - type: object
+          additionalProperties: false
+          properties:
+            isActive:
+              type: boolean
+              default: true
+            naturalPerson:
+              $ref: "#/components/schemas/NaturalPersonData"
+            legalEntity:
+              $ref: "#/components/schemas/LegalEntityData"
+          oneOf:
+            - properties:
+                personType:
+                  const: NATURAL
+              required:
+                - naturalPerson
+            - properties:
+                personType:
+                  const: LEGAL
+              required:
+                - legalEntity
     PersonUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/PersonCreateRequest'
+        - $ref: "#/components/schemas/PersonCreateRequest"
     PersonPatchRequest:
       type: object
       additionalProperties: false
@@ -613,19 +616,19 @@ components:
           maxLength: 150
         secondaryEmail:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: email
           maxLength: 150
         mobilePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 30
         landlinePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 30
         countryId:
           type: integer
@@ -633,19 +636,19 @@ components:
           minimum: 1
         postalCode:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 10
         primaryAddressLine:
           type: string
         primaryAddressLine2:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         naturalPerson:
-          $ref: '#/components/schemas/NaturalPersonData'
+          $ref: "#/components/schemas/NaturalPersonData"
         legalEntity:
-          $ref: '#/components/schemas/LegalEntityData'
+          $ref: "#/components/schemas/LegalEntityData"
       minProperties: 1
     PersonResponse:
       type: object
@@ -657,23 +660,23 @@ components:
         isActive:
           type: boolean
         personType:
-          $ref: '#/components/schemas/PersonTypeCode'
+          $ref: "#/components/schemas/PersonTypeCode"
         email:
           type: string
           format: email
         secondaryEmail:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: email
         mobilePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         landlinePhone:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         country:
           type: object
           additionalProperties: false
@@ -683,28 +686,28 @@ components:
               format: int32
             isoAlpha2:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
               maxLength: 2
             name:
               type: string
           required:
-          - id
-          - name
+            - id
+            - name
         postalCode:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         primaryAddressLine:
           type: string
         primaryAddressLine2:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         naturalPerson:
           type:
-          - object
-          - 'null'
+            - object
+            - "null"
           additionalProperties: false
           properties:
             name:
@@ -724,42 +727,42 @@ components:
                   type: integer
                   format: int32
                 code:
-                  $ref: '#/components/schemas/GenderCode'
+                  $ref: "#/components/schemas/GenderCode"
                 name:
                   type: string
               required:
-              - id
-              - code
-              - name
+                - id
+                - code
+                - name
           required:
-          - name
-          - firstSurname
-          - secondSurname
-          - birthDate
-          - gender
+            - name
+            - firstSurname
+            - secondSurname
+            - birthDate
+            - gender
         legalEntity:
           type:
-          - object
-          - 'null'
+            - object
+            - "null"
           additionalProperties: false
           properties:
             legalName:
               type: string
             tradeName:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
             foundationDate:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
               format: date
           required:
-          - legalName
+            - legalName
         createdBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         createdAt:
           type: string
@@ -767,34 +770,34 @@ components:
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
       required:
-      - id
-      - isActive
-      - personType
-      - email
-      - country
-      - primaryAddressLine
-      - createdAt
+        - id
+        - isActive
+        - personType
+        - email
+        - country
+        - primaryAddressLine
+        - createdAt
     PersonListResponse:
       type: object
       additionalProperties: false
@@ -802,18 +805,18 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PersonResponse'
+            $ref: "#/components/schemas/PersonResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PersonDocumentCreateRequest:
       type: object
       additionalProperties: false
       properties:
         documentTypeCode:
-          $ref: '#/components/schemas/DocumentTypeCode'
+          $ref: "#/components/schemas/DocumentTypeCode"
         documentNumber:
           type: string
           maxLength: 30
@@ -822,23 +825,23 @@ components:
           default: false
         issuedDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         expirationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
           default: true
       required:
-      - documentTypeCode
-      - documentNumber
+        - documentTypeCode
+        - documentNumber
     PersonDocumentUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/PersonDocumentCreateRequest'
+        - $ref: "#/components/schemas/PersonDocumentCreateRequest"
     PersonDocumentPatchRequest:
       type: object
       additionalProperties: false
@@ -849,13 +852,13 @@ components:
           type: boolean
         issuedDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         expirationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
       minProperties: 1
     PersonDocumentResponse:
@@ -878,26 +881,26 @@ components:
               type: integer
               format: int32
             code:
-              $ref: '#/components/schemas/DocumentTypeCode'
+              $ref: "#/components/schemas/DocumentTypeCode"
             name:
               type: string
           required:
-          - id
-          - code
-          - name
+            - id
+            - code
+            - name
         documentNumber:
           type: string
         isPrimary:
           type: boolean
         issuedDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         expirationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         createdAt:
           type: string
@@ -905,27 +908,27 @@ components:
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - isActive
-      - personId
-      - documentType
-      - documentNumber
-      - isPrimary
-      - createdAt
+        - id
+        - isActive
+        - personId
+        - documentType
+        - documentNumber
+        - isPrimary
+        - createdAt
     PersonDocumentListResponse:
       type: object
       additionalProperties: false
@@ -933,9 +936,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PersonDocumentResponse'
+            $ref: "#/components/schemas/PersonDocumentResponse"
       required:
-      - items
+        - items
     LegalRepresentativeCreateRequest:
       type: object
       additionalProperties: false
@@ -947,16 +950,16 @@ components:
           description: core.natural_person.person_id
         jobPosition:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 100
         startDate:
           type: string
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isMain:
           type: boolean
@@ -965,22 +968,22 @@ components:
           type: boolean
           default: true
       required:
-      - naturalPersonId
-      - startDate
+        - naturalPersonId
+        - startDate
     LegalRepresentativeDeactivateRequest:
       type: object
       additionalProperties: false
       properties:
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
-          description: 'Opcional: fecha fin de representación.'
+          description: "Opcional: fecha fin de representación."
         reason:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 200
     LegalRepresentativeResponse:
       type: object
@@ -999,15 +1002,15 @@ components:
           format: int64
         jobPosition:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         startDate:
           type: string
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isMain:
           type: boolean
@@ -1016,17 +1019,17 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - isActive
-      - legalEntityPersonId
-      - naturalPersonId
-      - startDate
-      - isMain
-      - createdAt
+        - id
+        - isActive
+        - legalEntityPersonId
+        - naturalPersonId
+        - startDate
+        - isMain
+        - createdAt
     LegalRepresentativeListResponse:
       type: object
       additionalProperties: false
@@ -1034,9 +1037,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/LegalRepresentativeResponse'
+            $ref: "#/components/schemas/LegalRepresentativeResponse"
       required:
-      - items
+        - items
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -1051,9 +1054,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -1064,13 +1067,13 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
     UserAccountId:
       type: integer
       format: int64
@@ -1082,28 +1085,28 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto (p.ej. email único o documento duplicado).
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

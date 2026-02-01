@@ -2,321 +2,322 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Inventory API
   version: 1.1.0
-  description: API de Inventario para gestión de tipos de habitación (hotel.room_type) y habitaciones (hotel.room). Requiere
+  description:
+    API de Inventario para gestión de tipos de habitación (hotel.room_type) y habitaciones (hotel.room). Requiere
     header X-Property-Id.
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: room-types
-  description: Gestión de tipos de habitación.
-- name: rooms
-  description: Gestión de habitaciones de la propiedad.
+  - name: room-types
+    description: Gestión de tipos de habitación.
+  - name: rooms
+    description: Gestión de habitaciones de la propiedad.
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /room-types:
     get:
       tags:
-      - room-types
+        - room-types
       operationId: listRoomTypes
       summary: Listar tipos de habitación
       description: Devuelve el listado de tipos de habitación definidos para la propiedad.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       responses:
-        '200':
+        "200":
           description: Listado de tipos de habitación.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTypeListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomTypeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - room-types
+        - room-types
       operationId: createRoomType
       summary: Crear tipo de habitación
       description: Crea un nuevo tipo de habitación para la propiedad.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomTypeCreateRequest'
+              $ref: "#/components/schemas/RoomTypeCreateRequest"
       responses:
-        '201':
+        "201":
           description: Tipo de habitación creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTypeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomTypeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /room-types/{roomTypeId}:
     get:
       tags:
-      - room-types
+        - room-types
       operationId: getRoomType
       summary: Obtener tipo de habitación
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomTypeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomTypeId"
       responses:
-        '200':
+        "200":
           description: Detalle del tipo de habitación.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTypeResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomTypeResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - room-types
+        - room-types
       operationId: updateRoomType
       summary: Actualizar tipo de habitación (reemplazo)
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomTypeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomTypeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomTypeUpdateRequest'
+              $ref: "#/components/schemas/RoomTypeUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Tipo de habitación actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTypeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomTypeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - room-types
+        - room-types
       operationId: patchRoomType
       summary: Actualizar tipo de habitación (parcial)
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomTypeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomTypeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomTypePatchRequest'
+              $ref: "#/components/schemas/RoomTypePatchRequest"
       responses:
-        '200':
+        "200":
           description: Tipo de habitación actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTypeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomTypeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /rooms:
     get:
       tags:
-      - rooms
+        - rooms
       operationId: listRooms
       summary: Listar habitaciones
       description: Devuelve el listado de habitaciones permitiendo filtrar por estado, piso o tipo.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomStatusQuery'
-      - $ref: '#/components/parameters/FloorQuery'
-      - $ref: '#/components/parameters/RoomTypeIdQuery'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomStatusQuery"
+        - $ref: "#/components/parameters/FloorQuery"
+        - $ref: "#/components/parameters/RoomTypeIdQuery"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de habitaciones.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - rooms
+        - rooms
       operationId: createRoom
       summary: Crear habitación
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomCreateRequest'
+              $ref: "#/components/schemas/RoomCreateRequest"
       responses:
-        '201':
+        "201":
           description: Habitación creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /rooms/{roomId}:
     get:
       tags:
-      - rooms
+        - rooms
       operationId: getRoom
       summary: Obtener habitación
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomId"
       responses:
-        '200':
+        "200":
           description: Detalle de la habitación.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - rooms
+        - rooms
       operationId: updateRoom
       summary: Actualizar habitación (reemplazo)
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomUpdateRequest'
+              $ref: "#/components/schemas/RoomUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Habitación actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - rooms
+        - rooms
       operationId: patchRoom
       summary: Actualizar habitación (parcial)
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomPatchRequest'
+              $ref: "#/components/schemas/RoomPatchRequest"
       responses:
-        '200':
+        "200":
           description: Habitación actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /rooms/{roomId}/status:
     patch:
       tags:
-      - rooms
+        - rooms
       operationId: updateRoomStatus
       summary: Actualizar estado de habitación
       description: Actualiza el estado operativo de una habitación junto con notas.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/RoomId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/RoomId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomStatusUpdateRequest'
+              $ref: "#/components/schemas/RoomStatusUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Estado de habitación actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoomResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -355,12 +356,12 @@ components:
       schema:
         type: string
         enum: &id001
-        - AVAILABLE
-        - OCCUPIED
-        - DIRTY
-        - CLEANING
-        - MAINTENANCE
-        - OUT_OF_ORDER
+          - AVAILABLE
+          - OCCUPIED
+          - DIRTY
+          - CLEANING
+          - MAINTENANCE
+          - OUT_OF_ORDER
     FloorQuery:
       name: floor
       in: query
@@ -406,8 +407,8 @@ components:
           maxLength: 100
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         capacity:
           type: integer
           minimum: 1
@@ -415,12 +416,12 @@ components:
           type: boolean
           default: true
       required:
-      - code
-      - name
-      - capacity
+        - code
+        - name
+        - capacity
     RoomTypeUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/RoomTypeCreateRequest'
+        - $ref: "#/components/schemas/RoomTypeCreateRequest"
     RoomTypePatchRequest:
       type: object
       additionalProperties: false
@@ -430,8 +431,8 @@ components:
           maxLength: 100
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         capacity:
           type: integer
           minimum: 1
@@ -454,19 +455,19 @@ components:
           type: string
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         capacity:
           type: integer
         isActive:
           type: boolean
       required:
-      - id
-      - propertyId
-      - code
-      - name
-      - capacity
-      - isActive
+        - id
+        - propertyId
+        - code
+        - name
+        - capacity
+        - isActive
     RoomTypeListResponse:
       type: object
       additionalProperties: false
@@ -474,9 +475,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/RoomTypeResponse'
+            $ref: "#/components/schemas/RoomTypeResponse"
       required:
-      - items
+        - items
     RoomCreateRequest:
       type: object
       additionalProperties: false
@@ -497,18 +498,18 @@ components:
           default: AVAILABLE
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
           default: true
       required:
-      - roomTypeId
-      - number
-      - floor
+        - roomTypeId
+        - number
+        - floor
     RoomUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/RoomCreateRequest'
+        - $ref: "#/components/schemas/RoomCreateRequest"
     RoomPatchRequest:
       type: object
       additionalProperties: false
@@ -525,8 +526,8 @@ components:
           minimum: 0
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
       minProperties: 1
@@ -539,10 +540,10 @@ components:
           enum: *id001
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
       required:
-      - statusCode
+        - statusCode
     RoomResponse:
       type: object
       additionalProperties: false
@@ -565,18 +566,18 @@ components:
           enum: *id001
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
       required:
-      - id
-      - propertyId
-      - roomTypeId
-      - number
-      - floor
-      - statusCode
-      - isActive
+        - id
+        - propertyId
+        - roomTypeId
+        - number
+        - floor
+        - statusCode
+        - isActive
     RoomListResponse:
       type: object
       additionalProperties: false
@@ -584,12 +585,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/RoomResponse'
+            $ref: "#/components/schemas/RoomResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -601,9 +602,9 @@ components:
         total:
           type: integer
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -614,41 +615,41 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto de negocio.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

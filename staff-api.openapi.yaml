@@ -2,294 +2,299 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Staff API
   version: 1.1.0
-  description: API para gestión de empleados (staff.employee) y su historial de turnos (staff.employee_shift) y posiciones
+  description:
+    API para gestión de empleados (staff.employee) y su historial de turnos (staff.employee_shift) y posiciones
     (staff.employee_position). Requiere header X-Property-Id.
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: employees
-  description: Gestión de empleados de la propiedad.
-- name: employee-shifts
-  description: Historial de asignación de turnos por empleado.
-- name: employee-positions
-  description: Historial de asignación de posiciones/cargos por empleado.
+  - name: employees
+    description: Gestión de empleados de la propiedad.
+  - name: employee-shifts
+    description: Historial de asignación de turnos por empleado.
+  - name: employee-positions
+    description: Historial de asignación de posiciones/cargos por empleado.
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /employees:
     post:
       tags:
-      - employees
+        - employees
       operationId: createEmployee
       summary: Registrar empleado
-      description: Crea un nuevo empleado para la propiedad. Se asocia a una persona existente (core.person) y define datos
+      description:
+        Crea un nuevo empleado para la propiedad. Se asocia a una persona existente (core.person) y define datos
         laborales básicos.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeCreateRequest'
+              $ref: "#/components/schemas/EmployeeCreateRequest"
       responses:
-        '201':
+        "201":
           description: Empleado creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - employees
+        - employees
       operationId: listEmployees
       summary: Listar empleados
       description: Devuelve el listado de empleados de la propiedad. Permite filtrar por estado y departamento.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeStatusCode'
-      - $ref: '#/components/parameters/DepartmentId'
-      - name: active
-        in: query
-        required: false
-        description: Filtra por is_active (registro activo/inactivo).
-        schema:
-          type: boolean
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeStatusCode"
+        - $ref: "#/components/parameters/DepartmentId"
+        - name: active
+          in: query
+          required: false
+          description: Filtra por is_active (registro activo/inactivo).
+          schema:
+            type: boolean
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de empleados.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /employees/{employeeId}:
     get:
       tags:
-      - employees
+        - employees
       operationId: getEmployee
       summary: Obtener empleado
       description: Devuelve el detalle completo de un empleado específico.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
       responses:
-        '200':
+        "200":
           description: Detalle del empleado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - employees
+        - employees
       operationId: updateEmployee
       summary: Actualizar empleado (reemplazo)
       description: Actualiza de forma completa un empleado existente, reemplazando los datos previamente registrados.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeUpdateRequest'
+              $ref: "#/components/schemas/EmployeeUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Empleado actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - employees
+        - employees
       operationId: patchEmployee
       summary: Actualizar empleado (parcial)
-      description: Actualiza parcialmente un empleado. En particular, permite gestionar terminationDate, statusCode o isActive
+      description:
+        Actualiza parcialmente un empleado. En particular, permite gestionar terminationDate, statusCode o isActive
         sin reemplazar el registro completo.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeePatchRequest'
+              $ref: "#/components/schemas/EmployeePatchRequest"
       responses:
-        '200':
+        "200":
           description: Empleado actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /employees/{employeeId}/shifts:
     get:
       tags:
-      - employee-shifts
+        - employee-shifts
       operationId: listEmployeeShifts
       summary: Listar asignaciones de turno
       description: Devuelve el historial de asignación de turnos de un empleado (staff.employee_shift).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
-      - name: active
-        in: query
-        required: false
-        description: Si true, solo devuelve la asignación vigente (endDate NULL o is_active true según implementación).
-        schema:
-          type: boolean
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
+        - name: active
+          in: query
+          required: false
+          description: Si true, solo devuelve la asignación vigente (endDate NULL o is_active true según implementación).
+          schema:
+            type: boolean
       responses:
-        '200':
+        "200":
           description: Historial de turnos.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeShiftListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeShiftListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - employee-shifts
+        - employee-shifts
       operationId: assignEmployeeShift
       summary: Asignar turno (nueva asignación)
-      description: Crea una nueva asignación de turno. El backend debe cerrar la asignación anterior (por ejemplo, seteando
+      description:
+        Crea una nueva asignación de turno. El backend debe cerrar la asignación anterior (por ejemplo, seteando
         endDate) para mantener una sola asignación vigente.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeShiftCreateRequest'
+              $ref: "#/components/schemas/EmployeeShiftCreateRequest"
       responses:
-        '201':
+        "201":
           description: Asignación creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeShiftResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeeShiftResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /employees/{employeeId}/positions:
     get:
       tags:
-      - employee-positions
+        - employee-positions
       operationId: listEmployeePositions
       summary: Listar asignaciones de posición/cargo
       description: Devuelve el historial de asignación de posiciones/cargos de un empleado (staff.employee_position).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
-      - name: active
-        in: query
-        required: false
-        description: Si true, solo devuelve la asignación vigente.
-        schema:
-          type: boolean
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
+        - name: active
+          in: query
+          required: false
+          description: Si true, solo devuelve la asignación vigente.
+          schema:
+            type: boolean
       responses:
-        '200':
+        "200":
           description: Historial de posiciones.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeePositionListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeePositionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - employee-positions
+        - employee-positions
       operationId: assignEmployeePosition
       summary: Asignar posición/cargo (nueva asignación)
-      description: Crea una nueva asignación de posición. El backend debe cerrar la asignación anterior para mantener una
+      description:
+        Crea una nueva asignación de posición. El backend debe cerrar la asignación anterior para mantener una
         sola asignación vigente.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/EmployeeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/EmployeeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeePositionCreateRequest'
+              $ref: "#/components/schemas/EmployeePositionCreateRequest"
       responses:
-        '201':
+        "201":
           description: Asignación creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeePositionResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EmployeePositionResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -322,11 +327,11 @@ components:
       schema:
         type: string
         enum: &id001
-        - ACTIVE
-        - INACTIVE
-        - ON_LEAVE
-        - SUSPENDED
-        - TERMINATED
+          - ACTIVE
+          - INACTIVE
+          - ON_LEAVE
+          - SUSPENDED
+          - TERMINATED
     DepartmentId:
       name: departmentId
       in: query
@@ -374,8 +379,8 @@ components:
           maxLength: 30
         departmentId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int32
           minimum: 1
         hireDate:
@@ -383,34 +388,34 @@ components:
           format: date
         terminationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
           description: Debe ser >= hireDate si se envía.
         statusCode:
-          $ref: '#/components/schemas/EmployeeStatusCode'
+          $ref: "#/components/schemas/EmployeeStatusCode"
         contractTypeId:
           type: integer
           format: int32
           minimum: 1
           description: catalog.contract_type.id
       required:
-      - personId
-      - employeeCode
-      - hireDate
-      - statusCode
-      - contractTypeId
+        - personId
+        - employeeCode
+        - hireDate
+        - statusCode
+        - contractTypeId
     EmployeeUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/EmployeeCreateRequest'
+        - $ref: "#/components/schemas/EmployeeCreateRequest"
     EmployeePatchRequest:
       type: object
       additionalProperties: false
       properties:
         departmentId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int32
           minimum: 1
         hireDate:
@@ -418,11 +423,11 @@ components:
           format: date
         terminationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         statusCode:
-          $ref: '#/components/schemas/EmployeeStatusCode'
+          $ref: "#/components/schemas/EmployeeStatusCode"
         contractTypeId:
           type: integer
           format: int32
@@ -448,16 +453,16 @@ components:
           maxLength: 30
         departmentId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int32
         hireDate:
           type: string
           format: date
         terminationDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         status:
           type: object
@@ -467,12 +472,12 @@ components:
               type: integer
               format: int32
             code:
-              $ref: '#/components/schemas/EmployeeStatusCode'
+              $ref: "#/components/schemas/EmployeeStatusCode"
             name:
               type: string
           required:
-          - id
-          - code
+            - id
+            - code
         contractType:
           type: object
           additionalProperties: false
@@ -486,8 +491,8 @@ components:
             name:
               type: string
           required:
-          - id
-          - code
+            - id
+            - code
         isActive:
           type: boolean
         createdAt:
@@ -495,19 +500,19 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - propertyId
-      - personId
-      - employeeCode
-      - hireDate
-      - status
-      - contractType
-      - isActive
-      - createdAt
+        - id
+        - propertyId
+        - personId
+        - employeeCode
+        - hireDate
+        - status
+        - contractType
+        - isActive
+        - createdAt
     EmployeeListResponse:
       type: object
       additionalProperties: false
@@ -515,12 +520,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EmployeeResponse'
+            $ref: "#/components/schemas/EmployeeResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     EmployeeShiftCreateRequest:
       type: object
       additionalProperties: false
@@ -535,16 +540,16 @@ components:
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
           description: Normalmente omitido; el backend controla cierres de asignación.
         isActive:
           type: boolean
           default: true
       required:
-      - shiftId
-      - startDate
+        - shiftId
+        - startDate
     EmployeeShiftResponse:
       type: object
       additionalProperties: false
@@ -577,18 +582,18 @@ components:
               type: string
               format: time
           required:
-          - id
-          - code
-          - name
-          - startTime
-          - endTime
+            - id
+            - code
+            - name
+            - startTime
+            - endTime
         startDate:
           type: string
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
@@ -597,17 +602,17 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - propertyId
-      - employeeId
-      - shift
-      - startDate
-      - isActive
-      - createdAt
+        - id
+        - propertyId
+        - employeeId
+        - shift
+        - startDate
+        - isActive
+        - createdAt
     EmployeeShiftListResponse:
       type: object
       additionalProperties: false
@@ -615,9 +620,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EmployeeShiftResponse'
+            $ref: "#/components/schemas/EmployeeShiftResponse"
       required:
-      - items
+        - items
     EmployeePositionCreateRequest:
       type: object
       additionalProperties: false
@@ -632,20 +637,20 @@ components:
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
           description: Normalmente omitido; el backend controla cierres de asignación.
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
           default: true
       required:
-      - positionId
-      - startDate
+        - positionId
+        - startDate
     EmployeePositionResponse:
       type: object
       additionalProperties: false
@@ -673,24 +678,24 @@ components:
               type: string
             description:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
           required:
-          - id
-          - code
-          - name
+            - id
+            - code
+            - name
         startDate:
           type: string
           format: date
         endDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
         createdAt:
@@ -698,17 +703,17 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - propertyId
-      - employeeId
-      - position
-      - startDate
-      - isActive
-      - createdAt
+        - id
+        - propertyId
+        - employeeId
+        - position
+        - startDate
+        - isActive
+        - createdAt
     EmployeePositionListResponse:
       type: object
       additionalProperties: false
@@ -716,9 +721,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EmployeePositionResponse'
+            $ref: "#/components/schemas/EmployeePositionResponse"
       required:
-      - items
+        - items
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -733,9 +738,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -746,41 +751,41 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto (por ejemplo, employee_code duplicado por propiedad o persona ya asociada).
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

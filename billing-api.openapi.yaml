@@ -2,521 +2,524 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Billing API
   version: 1.1.0
-  description: 'API de facturación y caja: folios (billing.guest_folio), cargos (billing.folio_charge), pagos (billing.payment)
-    y asignaciones (billing.payment_allocation). Incluye contrato para invoices (fase 2). Requiere header X-Property-Id.'
+  description:
+    "API de facturación y caja: folios (billing.guest_folio), cargos (billing.folio_charge), pagos (billing.payment)
+    y asignaciones (billing.payment_allocation). Incluye contrato para invoices (fase 2). Requiere header X-Property-Id."
   contact:
     name: Oriana ERP
     email: support@example.com
   license:
     name: Proprietary
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: folios
-  description: Gestión de folios del huésped (guest_folio).
-- name: folio-charges
-  description: Cargos dentro de un folio (folio_charge).
-- name: payments
-  description: Registro y consulta de pagos (payment).
-- name: payment-allocations
-  description: Asignación de pagos a folios o facturas (payment_allocation).
-- name: invoices
-  description: Facturas y notas de crédito (invoice) - fase 2.
-- name: invoice-items
-  description: Ítems de factura (invoice_item) - fase 2.
+  - name: folios
+    description: Gestión de folios del huésped (guest_folio).
+  - name: folio-charges
+    description: Cargos dentro de un folio (folio_charge).
+  - name: payments
+    description: Registro y consulta de pagos (payment).
+  - name: payment-allocations
+    description: Asignación de pagos a folios o facturas (payment_allocation).
+  - name: invoices
+    description: Facturas y notas de crédito (invoice) - fase 2.
+  - name: invoice-items
+    description: Ítems de factura (invoice_item) - fase 2.
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /folios:
     post:
       tags:
-      - folios
+        - folios
       operationId: createFolio
       summary: Crear folio
-      description: Crea un nuevo folio para la propiedad. Puede asociarse a una estadía y/o huésped. El estado inicial suele
+      description:
+        Crea un nuevo folio para la propiedad. Puede asociarse a una estadía y/o huésped. El estado inicial suele
         ser OPEN.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FolioCreateRequest'
+              $ref: "#/components/schemas/FolioCreateRequest"
       responses:
-        '201':
+        "201":
           description: Folio creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - folios
+        - folios
       operationId: listFolios
       summary: Listar folios
       description: Devuelve el listado de folios de la propiedad. Permite filtrar por stayId y status (OPEN/CLOSED/VOID).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/StayIdQuery'
-      - $ref: '#/components/parameters/FolioStatusQuery'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/StayIdQuery"
+        - $ref: "#/components/parameters/FolioStatusQuery"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de folios.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /folios/{folioId}:
     get:
       tags:
-      - folios
+        - folios
       operationId: getFolio
       summary: Obtener folio
       description: Devuelve el detalle de un folio específico.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
       responses:
-        '200':
+        "200":
           description: Detalle del folio.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - folios
+        - folios
       operationId: patchFolio
       summary: Actualizar folio (parcial)
       description: Actualiza parcialmente un folio. Útil para cerrar/abrir (status) y/o marcar isActive.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FolioPatchRequest'
+              $ref: "#/components/schemas/FolioPatchRequest"
       responses:
-        '200':
+        "200":
           description: Folio actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /folios/{folioId}/charges:
     get:
       tags:
-      - folio-charges
+        - folio-charges
       operationId: listFolioCharges
       summary: Listar cargos de folio
       description: Devuelve el listado de cargos asociados a un folio.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
-      - $ref: '#/components/parameters/ActiveQuery'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
+        - $ref: "#/components/parameters/ActiveQuery"
       responses:
-        '200':
+        "200":
           description: Listado de cargos.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioChargeListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioChargeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - folio-charges
+        - folio-charges
       operationId: createFolioCharge
       summary: Crear cargo
       description: Crea un cargo en un folio. Puede referenciar un price_list_item y un service.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FolioChargeCreateRequest'
+              $ref: "#/components/schemas/FolioChargeCreateRequest"
       responses:
-        '201':
+        "201":
           description: Cargo creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioChargeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioChargeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /folios/{folioId}/charges/{chargeId}:
     put:
       tags:
-      - folio-charges
+        - folio-charges
       operationId: updateFolioCharge
       summary: Actualizar cargo (reemplazo)
-      description: 'Actualiza completamente un cargo del folio. Nota: los campos calculados (subtotal/tax/total) se derivan
-        de quantity/unitPrice/discount/tax.'
+      description:
+        "Actualiza completamente un cargo del folio. Nota: los campos calculados (subtotal/tax/total) se derivan
+        de quantity/unitPrice/discount/tax."
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
-      - $ref: '#/components/parameters/ChargeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
+        - $ref: "#/components/parameters/ChargeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FolioChargeUpdateRequest'
+              $ref: "#/components/schemas/FolioChargeUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Cargo actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolioChargeResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/FolioChargeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
-      - folio-charges
+        - folio-charges
       operationId: deleteFolioCharge
       summary: Eliminar cargo
       description: Elimina un cargo del folio. Alternativamente, puede implementarse como baja lógica (is_active=false).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FolioId'
-      - $ref: '#/components/parameters/ChargeId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FolioId"
+        - $ref: "#/components/parameters/ChargeId"
       responses:
-        '204':
+        "204":
           description: Cargo eliminado.
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /payments:
     post:
       tags:
-      - payments
+        - payments
       operationId: createPayment
       summary: Registrar pago
       description: Registra un pago. Puede asociarse a un folio (guest_folio_id) y luego asignarse vía allocations.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PaymentCreateRequest'
+              $ref: "#/components/schemas/PaymentCreateRequest"
       responses:
-        '201':
+        "201":
           description: Pago registrado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - payments
+        - payments
       operationId: listPayments
       summary: Listar pagos
       description: Devuelve el listado de pagos de la propiedad. Permite filtrar por rango de fechas y método de pago.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FromDateTime'
-      - $ref: '#/components/parameters/ToDateTime'
-      - $ref: '#/components/parameters/MethodCode'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FromDateTime"
+        - $ref: "#/components/parameters/ToDateTime"
+        - $ref: "#/components/parameters/MethodCode"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de pagos.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PaymentListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /payments/{paymentId}:
     get:
       tags:
-      - payments
+        - payments
       operationId: getPayment
       summary: Obtener pago
       description: Devuelve el detalle de un pago específico.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PaymentId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PaymentId"
       responses:
-        '200':
+        "200":
           description: Detalle del pago.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PaymentResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /payments/{paymentId}/allocations:
     get:
       tags:
-      - payment-allocations
+        - payment-allocations
       operationId: listPaymentAllocations
       summary: Listar asignaciones de pago
       description: Devuelve las asignaciones (allocations) de un pago.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PaymentId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PaymentId"
       responses:
-        '200':
+        "200":
           description: Listado de asignaciones.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentAllocationListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PaymentAllocationListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - payment-allocations
+        - payment-allocations
       operationId: createPaymentAllocation
       summary: Crear asignación de pago
       description: Asigna un pago a un folio o a una factura. Por constraint de DB, debe enviarse guestFolioId XOR invoiceId.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PaymentId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PaymentId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PaymentAllocationCreateRequest'
+              $ref: "#/components/schemas/PaymentAllocationCreateRequest"
       responses:
-        '201':
+        "201":
           description: Asignación creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentAllocationResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PaymentAllocationResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /invoices:
     post:
       tags:
-      - invoices
+        - invoices
       operationId: createInvoice
       summary: Crear invoice (fase 2)
       description: Crea una factura o nota de crédito asociada a un folio. (Contrato listo para fase 2).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InvoiceCreateRequest'
+              $ref: "#/components/schemas/InvoiceCreateRequest"
       responses:
-        '201':
+        "201":
           description: Invoice creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/InvoiceResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - invoices
+        - invoices
       operationId: listInvoices
       summary: Listar invoices (fase 2)
       description: Devuelve el listado de invoices por rango de fechas (invoice_date).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/FromDate'
-      - $ref: '#/components/parameters/ToDate'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/FromDate"
+        - $ref: "#/components/parameters/ToDate"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de invoices.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/InvoiceListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /invoices/{invoiceId}:
     get:
       tags:
-      - invoices
+        - invoices
       operationId: getInvoice
       summary: Obtener invoice (fase 2)
       description: Devuelve el detalle de una invoice.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/InvoiceId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/InvoiceId"
       responses:
-        '200':
+        "200":
           description: Detalle invoice.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/InvoiceResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /invoices/{invoiceId}/items:
     get:
       tags:
-      - invoice-items
+        - invoice-items
       operationId: listInvoiceItems
       summary: Listar ítems de invoice (fase 2)
       description: Devuelve los ítems de una invoice.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/InvoiceId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/InvoiceId"
       responses:
-        '200':
+        "200":
           description: Listado de ítems.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceItemListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/InvoiceItemListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - invoice-items
+        - invoice-items
       operationId: createInvoiceItem
       summary: Crear ítem de invoice (fase 2)
       description: Crea un ítem dentro de una invoice. Puede asociarse a un cargo (folio_charge).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/InvoiceId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/InvoiceId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InvoiceItemCreateRequest'
+              $ref: "#/components/schemas/InvoiceItemCreateRequest"
       responses:
-        '201':
+        "201":
           description: Ítem creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceItemResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/InvoiceItemResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -581,9 +584,9 @@ components:
       schema:
         type: string
         enum: &id001
-        - OPEN
-        - CLOSED
-        - VOID
+          - OPEN
+          - CLOSED
+          - VOID
       description: Filtra folios por estado.
     ActiveQuery:
       name: active
@@ -631,11 +634,11 @@ components:
       schema:
         type: string
         enum: &id002
-        - CASH
-        - CARD
-        - TRANSFER
-        - YAPE
-        - PLIN
+          - CASH
+          - CARD
+          - TRANSFER
+          - YAPE
+          - PLIN
       description: Código de método de pago (catalog.payment_method.code).
     Limit:
       name: limit
@@ -661,26 +664,26 @@ components:
     FolioType:
       type: string
       enum: &id003
-      - ROOM
-      - EXTRAS
-      - MASTER
+        - ROOM
+        - EXTRAS
+        - MASTER
     PaymentStatus:
       type: string
       enum: &id004
-      - POSTED
-      - VOID
-      - REFUNDED
+        - POSTED
+        - VOID
+        - REFUNDED
     InvoiceStatus:
       type: string
       enum: &id006
-      - DRAFT
-      - ISSUED
-      - CANCELLED
+        - DRAFT
+        - ISSUED
+        - CANCELLED
     InvoiceType:
       type: string
       enum: &id005
-      - INVOICE
-      - CREDIT_NOTE
+        - INVOICE
+        - CREDIT_NOTE
     PaymentMethodCode:
       type: string
       enum: *id002
@@ -696,8 +699,8 @@ components:
           format: int32
           minimum: 1
       required:
-      - amount
-      - currencyId
+        - amount
+        - currencyId
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -712,9 +715,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -725,33 +728,33 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
     FolioCreateRequest:
       type: object
       additionalProperties: false
       properties:
         stayId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         guestId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         folioNumber:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           minimum: 1
           description: Número de folio. Si se omite, el backend puede asignarlo.
         folioType:
@@ -763,18 +766,18 @@ components:
           format: int32
           minimum: 1
       required:
-      - currencyId
+        - currencyId
       oneOf:
-      - required:
-        - stayId
-        properties:
-          guestId:
-            type: 'null'
-      - required:
-        - guestId
-        properties:
-          stayId:
-            type: 'null'
+        - required:
+            - stayId
+          properties:
+            guestId:
+              type: "null"
+        - required:
+            - guestId
+          properties:
+            stayId:
+              type: "null"
     FolioPatchRequest:
       type: object
       additionalProperties: false
@@ -785,7 +788,8 @@ components:
         isActive:
           type: boolean
       minProperties: 1
-      description: Actualización parcial de folio (estado/activo). Campos de auditoría y de cierre son gestionados por el
+      description:
+        Actualización parcial de folio (estado/activo). Campos de auditoría y de cierre son gestionados por el
         servidor.
     FolioResponse:
       type: object
@@ -801,18 +805,18 @@ components:
           format: int64
         stayId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         guestId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         folioNumber:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
         status:
           type: string
           enum: *id001
@@ -832,14 +836,14 @@ components:
           readOnly: true
         closedBy:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           readOnly: true
         closedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdAt:
@@ -848,40 +852,41 @@ components:
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/UserAccountId'
+          allOf:
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - isActive
-      - propertyId
-      - status
-      - folioType
-      - currencyId
-      - openedBy
-      - openedAt
-      - createdAt
-      - createdBy
+        - id
+        - isActive
+        - propertyId
+        - status
+        - folioType
+        - currencyId
+        - openedBy
+        - openedAt
+        - createdAt
+        - createdBy
     FolioListResponse:
       type: object
       additionalProperties: false
@@ -889,20 +894,20 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/FolioResponse'
+            $ref: "#/components/schemas/FolioResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     FolioChargeBase:
       type: object
       additionalProperties: false
       properties:
         priceListItemId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         serviceId:
@@ -912,8 +917,8 @@ components:
           description: catalog.service.id
         roomId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
           description: hotel.room.id
@@ -941,26 +946,26 @@ components:
           default: true
         chargeDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
           default: true
       required:
-      - serviceId
-      - quantity
-      - unitPrice
+        - serviceId
+        - quantity
+        - unitPrice
     FolioChargeCreateRequest:
       allOf:
-      - $ref: '#/components/schemas/FolioChargeBase'
+        - $ref: "#/components/schemas/FolioChargeBase"
     FolioChargeUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/FolioChargeBase'
+        - $ref: "#/components/schemas/FolioChargeBase"
     FolioChargeResponse:
       type: object
       additionalProperties: false
@@ -975,16 +980,16 @@ components:
           type: boolean
         priceListItemId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         serviceId:
           type: integer
           format: int32
         roomId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         quantity:
           type: integer
@@ -1019,53 +1024,54 @@ components:
           format: date-time
         notes:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         createdAt:
           type: string
           format: date-time
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/UserAccountId'
+          allOf:
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - guestFolioId
-      - isActive
-      - serviceId
-      - quantity
-      - unitPrice
-      - discountAmount
-      - taxRate
-      - taxIncluded
-      - subtotal
-      - taxAmount
-      - total
-      - chargeDate
-      - createdAt
-      - createdBy
+        - id
+        - guestFolioId
+        - isActive
+        - serviceId
+        - quantity
+        - unitPrice
+        - discountAmount
+        - taxRate
+        - taxIncluded
+        - subtotal
+        - taxAmount
+        - total
+        - chargeDate
+        - createdAt
+        - createdBy
     FolioChargeListResponse:
       type: object
       additionalProperties: false
@@ -1073,17 +1079,17 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/FolioChargeResponse'
+            $ref: "#/components/schemas/FolioChargeResponse"
       required:
-      - items
+        - items
     PaymentCreateRequest:
       type: object
       additionalProperties: false
       properties:
         guestFolioId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         paymentMethodCode:
@@ -1104,23 +1110,23 @@ components:
           exclusiveMinimum: 0
         paymentDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
         transactionReference:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 100
         authCode:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           maxLength: 50
       required:
-      - paymentMethodCode
-      - currencyId
-      - originalAmount
+        - paymentMethodCode
+        - currencyId
+        - originalAmount
     PaymentResponse:
       type: object
       additionalProperties: false
@@ -1132,8 +1138,8 @@ components:
           type: boolean
         guestFolioId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         paymentMethod:
           type: object
@@ -1148,8 +1154,8 @@ components:
             name:
               type: string
           required:
-          - id
-          - code
+            - id
+            - code
         currencyId:
           type: integer
           format: int32
@@ -1162,7 +1168,7 @@ components:
         amount:
           type: number
           multipleOf: 0.01
-          description: 'Campo calculado en DB: original_amount * fx_rate'
+          description: "Campo calculado en DB: original_amount * fx_rate"
           readOnly: true
         status:
           type: string
@@ -1173,53 +1179,54 @@ components:
           readOnly: true
         transactionReference:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         authCode:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         createdAt:
           type: string
           format: date-time
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/UserAccountId'
+          allOf:
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - isActive
-      - paymentMethod
-      - currencyId
-      - fxRate
-      - originalAmount
-      - amount
-      - status
-      - paymentDate
-      - createdAt
-      - createdBy
+        - id
+        - isActive
+        - paymentMethod
+        - currencyId
+        - fxRate
+        - originalAmount
+        - amount
+        - status
+        - paymentDate
+        - createdAt
+        - createdBy
     PaymentListResponse:
       type: object
       additionalProperties: false
@@ -1227,26 +1234,26 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PaymentResponse'
+            $ref: "#/components/schemas/PaymentResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PaymentAllocationCreateRequest:
       type: object
       additionalProperties: false
       properties:
         guestFolioId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         invoiceId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         amount:
@@ -1254,18 +1261,18 @@ components:
           multipleOf: 0.01
           exclusiveMinimum: 0
       required:
-      - amount
+        - amount
       oneOf:
-      - required:
-        - guestFolioId
-        properties:
-          invoiceId:
-            type: 'null'
-      - required:
-        - invoiceId
-        properties:
-          guestFolioId:
-            type: 'null'
+        - required:
+            - guestFolioId
+          properties:
+            invoiceId:
+              type: "null"
+        - required:
+            - invoiceId
+          properties:
+            guestFolioId:
+              type: "null"
     PaymentAllocationResponse:
       type: object
       additionalProperties: false
@@ -1278,13 +1285,13 @@ components:
           format: int64
         guestFolioId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         invoiceId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         amount:
           type: number
@@ -1294,10 +1301,10 @@ components:
           format: date-time
           readOnly: true
       required:
-      - id
-      - paymentId
-      - amount
-      - createdAt
+        - id
+        - paymentId
+        - amount
+        - createdAt
     PaymentAllocationListResponse:
       type: object
       additionalProperties: false
@@ -1305,9 +1312,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PaymentAllocationResponse'
+            $ref: "#/components/schemas/PaymentAllocationResponse"
       required:
-      - items
+        - items
     InvoiceCreateRequest:
       type: object
       additionalProperties: false
@@ -1328,8 +1335,8 @@ components:
           minimum: 1
         invoiceDate:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         currencyId:
           type: integer
@@ -1350,23 +1357,23 @@ components:
           default: 0
         issuedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
         referenceInvoiceId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
       required:
-      - guestFolioId
-      - series
-      - numberInt
-      - currencyId
-      - netAmount
-      - taxAmount
-      - totalAmount
+        - guestFolioId
+        - series
+        - numberInt
+        - currencyId
+        - netAmount
+        - taxAmount
+        - totalAmount
     InvoiceResponse:
       type: object
       additionalProperties: false
@@ -1389,7 +1396,7 @@ components:
           type: integer
         number:
           type: string
-          description: 'Generado: series-########'
+          description: "Generado: series-########"
         invoiceDate:
           type: string
           format: date
@@ -1413,13 +1420,13 @@ components:
           enum: *id006
         issuedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
         referenceInvoiceId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         createdAt:
           type: string
@@ -1427,45 +1434,46 @@ components:
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/UserAccountId'
+          allOf:
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - propertyId
-      - guestFolioId
-      - invoiceType
-      - series
-      - numberInt
-      - number
-      - invoiceDate
-      - currencyId
-      - netAmount
-      - taxAmount
-      - totalAmount
-      - status
-      - createdAt
-      - createdBy
+        - id
+        - propertyId
+        - guestFolioId
+        - invoiceType
+        - series
+        - numberInt
+        - number
+        - invoiceDate
+        - currencyId
+        - netAmount
+        - taxAmount
+        - totalAmount
+        - status
+        - createdAt
+        - createdBy
     InvoiceListResponse:
       type: object
       additionalProperties: false
@@ -1473,20 +1481,20 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/InvoiceResponse'
+            $ref: "#/components/schemas/InvoiceResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     InvoiceItemCreateRequest:
       type: object
       additionalProperties: false
       properties:
         chargeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
         description:
@@ -1509,8 +1517,8 @@ components:
           type: boolean
           default: true
       required:
-      - description
-      - unitPrice
+        - description
+        - unitPrice
     InvoiceItemResponse:
       type: object
       additionalProperties: false
@@ -1523,8 +1531,8 @@ components:
           format: int64
         chargeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         description:
           type: string
@@ -1556,42 +1564,43 @@ components:
           readOnly: true
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/UserAccountId'
+          allOf:
+            - $ref: "#/components/schemas/UserAccountId"
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - id
-      - invoiceId
-      - description
-      - quantity
-      - unitPrice
-      - taxRate
-      - taxIncluded
-      - subtotal
-      - taxAmount
-      - amount
-      - createdAt
-      - createdBy
+        - id
+        - invoiceId
+        - description
+        - quantity
+        - unitPrice
+        - taxRate
+        - taxIncluded
+        - subtotal
+        - taxAmount
+        - amount
+        - createdAt
+        - createdBy
     InvoiceItemListResponse:
       type: object
       additionalProperties: false
@@ -1599,9 +1608,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/InvoiceItemResponse'
+            $ref: "#/components/schemas/InvoiceItemResponse"
       required:
-      - items
+        - items
     UserAccountId:
       type: integer
       format: int64
@@ -1613,8 +1622,8 @@ components:
       properties:
         createdBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           description: Usuario que creó el registro.
           readOnly: true
         createdAt:
@@ -1624,56 +1633,56 @@ components:
           readOnly: true
         updatedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         updatedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
         deletedBy:
           anyOf:
-          - $ref: '#/components/schemas/UserAccountId'
-          - type: 'null'
+            - $ref: "#/components/schemas/UserAccountId"
+            - type: "null"
           readOnly: true
         deletedAt:
           anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+            - type: string
+              format: date-time
+            - type: "null"
           readOnly: true
       required:
-      - createdAt
+        - createdAt
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto de negocio/consistencia.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

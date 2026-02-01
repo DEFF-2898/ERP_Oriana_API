@@ -2,228 +2,230 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Security API
   version: 1.1.0
-  description: API de seguridad para gestión de usuarios (security.user_account), roles (security.role) y asignación de roles
+  description:
+    API de seguridad para gestión de usuarios (security.user_account), roles (security.role) y asignación de roles
     por usuario (security.user_role). Si se activa, permite administrar accesos por propiedad (X-Property-Id).
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: users
-  description: Gestión de usuarios por propiedad (user_account).
-- name: roles
-  description: Consulta de roles disponibles (role).
-- name: user-roles
-  description: Asignación de roles por usuario (user_role).
+  - name: users
+    description: Gestión de usuarios por propiedad (user_account).
+  - name: roles
+    description: Consulta de roles disponibles (role).
+  - name: user-roles
+    description: Asignación de roles por usuario (user_role).
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /users:
     post:
       tags:
-      - users
+        - users
       operationId: createUser
       summary: Crear usuario
       description: Crea un usuario para una propiedad. Se asocia a una persona existente (core.person).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateRequest'
+              $ref: "#/components/schemas/UserCreateRequest"
       responses:
-        '201':
+        "201":
           description: Usuario creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - users
+        - users
       operationId: listUsers
       summary: Listar usuarios
       description: Devuelve el listado de usuarios. Permite filtrar por propertyId (útil para administradores multi-sede).
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PropertyIdQuery'
-      - $ref: '#/components/parameters/ActiveQuery'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PropertyIdQuery"
+        - $ref: "#/components/parameters/ActiveQuery"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de usuarios.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /users/{userId}:
     get:
       tags:
-      - users
+        - users
       operationId: getUser
       summary: Obtener usuario
       description: Devuelve el detalle de un usuario específico.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/UserId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/UserId"
       responses:
-        '200':
+        "200":
           description: Detalle del usuario.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - users
+        - users
       operationId: patchUser
       summary: Actualizar usuario (parcial)
-      description: Actualiza parcialmente un usuario. Permite activar/desactivar (isActive) y operaciones de cuenta como reset
+      description:
+        Actualiza parcialmente un usuario. Permite activar/desactivar (isActive) y operaciones de cuenta como reset
         de contraseña. La operación de lock se modela como 'isActive=false' dado el esquema actual.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/UserId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/UserId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPatchRequest'
+              $ref: "#/components/schemas/UserPatchRequest"
       responses:
-        '200':
+        "200":
           description: Usuario actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /roles:
     get:
       tags:
-      - roles
+        - roles
       operationId: listRoles
       summary: Listar roles
       description: Devuelve el catálogo de roles disponibles.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       responses:
-        '200':
+        "200":
           description: Listado de roles.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoleListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/RoleListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /users/{userId}/roles:
     get:
       tags:
-      - user-roles
+        - user-roles
       operationId: listUserRoles
       summary: Listar roles del usuario
       description: Devuelve los roles asignados a un usuario.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/UserId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/UserId"
       responses:
-        '200':
+        "200":
           description: Roles del usuario.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRoleListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserRoleListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - user-roles
+        - user-roles
       operationId: addUserRole
       summary: Asignar rol a usuario
       description: Asigna un rol a un usuario por roleCode.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/UserId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/UserId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRoleAssignRequest'
+              $ref: "#/components/schemas/UserRoleAssignRequest"
       responses:
-        '201':
+        "201":
           description: Rol asignado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRoleResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/UserRoleResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /users/{userId}/roles/{roleCode}:
     delete:
       tags:
-      - user-roles
+        - user-roles
       operationId: removeUserRole
       summary: Eliminar rol de usuario
       description: Elimina la asignación de un rol a un usuario usando roleCode.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/UserId'
-      - $ref: '#/components/parameters/RoleCode'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/RoleCode"
       responses:
-        '204':
+        "204":
           description: Rol eliminado.
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -255,9 +257,9 @@ components:
       schema:
         type: string
         enum: &id001
-        - ADMIN
-        - RECEPTIONIST
-        - MANAGER
+          - ADMIN
+          - RECEPTIONIST
+          - MANAGER
     PropertyIdQuery:
       name: propertyId
       in: query
@@ -302,8 +304,8 @@ components:
       properties:
         propertyId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           minimum: 1
           description: hotel.property.id. Si se omite, se asume X-Property-Id.
@@ -325,15 +327,15 @@ components:
           default: true
         roleCodes:
           type:
-          - array
-          - 'null'
+            - array
+            - "null"
           items:
-            $ref: '#/components/schemas/RoleCode'
-          description: 'Opcional: roles iniciales a asignar al usuario.'
+            $ref: "#/components/schemas/RoleCode"
+          description: "Opcional: roles iniciales a asignar al usuario."
       required:
-      - username
-      - personId
-      - password
+        - username
+        - personId
+        - password
     UserPatchRequest:
       type: object
       additionalProperties: false
@@ -343,23 +345,23 @@ components:
           description: Activa/Desactiva la cuenta (lock/unlock lógico).
         resetPassword:
           type:
-          - boolean
-          - 'null'
+            - boolean
+            - "null"
           description: Si true, el backend genera un reset o marca pendiente de cambio.
         newPassword:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           minLength: 8
           maxLength: 200
           description: Nueva contraseña (si tu estrategia permite set directo).
       minProperties: 1
       allOf:
-      - not:
-          anyOf:
-          - required:
-            - resetPassword
-            - newPassword
+        - not:
+            anyOf:
+              - required:
+                  - resetPassword
+                  - newPassword
     UserResponse:
       type: object
       additionalProperties: false
@@ -381,13 +383,13 @@ components:
         roles:
           type: array
           items:
-            $ref: '#/components/schemas/RoleResponse'
+            $ref: "#/components/schemas/RoleResponse"
       required:
-      - id
-      - propertyId
-      - username
-      - personId
-      - isActive
+        - id
+        - propertyId
+        - username
+        - personId
+        - isActive
     UserListResponse:
       type: object
       additionalProperties: false
@@ -395,12 +397,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/UserResponse'
+            $ref: "#/components/schemas/UserResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     RoleResponse:
       type: object
       additionalProperties: false
@@ -409,21 +411,21 @@ components:
           type: integer
           format: int32
         code:
-          $ref: '#/components/schemas/RoleCode'
+          $ref: "#/components/schemas/RoleCode"
         name:
           type: string
           maxLength: 50
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         isActive:
           type: boolean
       required:
-      - id
-      - code
-      - name
-      - isActive
+        - id
+        - code
+        - name
+        - isActive
     RoleListResponse:
       type: object
       additionalProperties: false
@@ -431,17 +433,17 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/RoleResponse'
+            $ref: "#/components/schemas/RoleResponse"
       required:
-      - items
+        - items
     UserRoleAssignRequest:
       type: object
       additionalProperties: false
       properties:
         roleCode:
-          $ref: '#/components/schemas/RoleCode'
+          $ref: "#/components/schemas/RoleCode"
       required:
-      - roleCode
+        - roleCode
     UserRoleResponse:
       type: object
       additionalProperties: false
@@ -450,10 +452,10 @@ components:
           type: integer
           format: int64
         role:
-          $ref: '#/components/schemas/RoleResponse'
+          $ref: "#/components/schemas/RoleResponse"
       required:
-      - userId
-      - role
+        - userId
+        - role
     UserRoleListResponse:
       type: object
       additionalProperties: false
@@ -461,9 +463,9 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/RoleResponse'
+            $ref: "#/components/schemas/RoleResponse"
       required:
-      - items
+        - items
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -478,9 +480,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -491,41 +493,41 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto (p.ej. username duplicado por propiedad o rol ya asignado).
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"

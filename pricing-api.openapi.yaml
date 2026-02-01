@@ -2,340 +2,346 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Pricing API
   version: 1.1.0
-  description: API para gestión de listas de precios (hotel.price_list), ítems (hotel.price_list_item) y consulta de tarifa
+  description:
+    API para gestión de listas de precios (hotel.price_list), ítems (hotel.price_list_item) y consulta de tarifa
     aplicable (quote). Requiere header X-Property-Id.
 servers:
-- url: /api/v1
+  - url: /api/v1
 
 tags:
-- name: price-lists
-  description: Gestión de listas de precios de la propiedad.
-- name: price-list-items
-  description: Ítems (tarifas) dentro de una lista de precios.
-- name: pricing
-  description: Consulta de tarifa aplicable (quote).
+  - name: price-lists
+    description: Gestión de listas de precios de la propiedad.
+  - name: price-list-items
+    description: Ítems (tarifas) dentro de una lista de precios.
+  - name: pricing
+    description: Consulta de tarifa aplicable (quote).
 
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /price-lists:
     post:
       tags:
-      - price-lists
+        - price-lists
       operationId: createPriceList
       summary: Crear lista de precios
       description: Crea una nueva lista de precios para la propiedad, definiendo nombre, vigencia y estado inicial.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
+        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListCreateRequest'
+              $ref: "#/components/schemas/PriceListCreateRequest"
       responses:
-        '201':
+        "201":
           description: Lista de precios creada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     get:
       tags:
-      - price-lists
+        - price-lists
       operationId: listPriceLists
       summary: Listar listas de precios
       description: Devuelve el listado de listas de precios de la propiedad. Permite filtrar por estado activo.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - name: active
-        in: query
-        required: false
-        description: Filtra por listas activas/inactivas (is_active).
-        schema:
-          type: boolean
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - name: active
+          in: query
+          required: false
+          description: Filtra por listas activas/inactivas (is_active).
+          schema:
+            type: boolean
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de listas de precios.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /price-lists/{priceListId}:
     get:
       tags:
-      - price-lists
+        - price-lists
       operationId: getPriceList
       summary: Obtener lista de precios
-      description: Devuelve el detalle completo de una lista de precios específica, incluyendo su vigencia y configuración
+      description:
+        Devuelve el detalle completo de una lista de precios específica, incluyendo su vigencia y configuración
         general.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
       responses:
-        '200':
+        "200":
           description: Detalle de lista de precios.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
-      - price-lists
+        - price-lists
       operationId: updatePriceList
       summary: Actualizar lista de precios (reemplazo)
       description: Actualiza de forma completa una lista de precios existente, reemplazando los datos previamente registrados.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListUpdateRequest'
+              $ref: "#/components/schemas/PriceListUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Lista de precios actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - price-lists
+        - price-lists
       operationId: patchPriceList
       summary: Actualizar lista de precios (parcial)
-      description: Actualiza parcialmente una lista de precios. Útil para activar/desactivar o modificar vigencia sin reemplazar
+      description:
+        Actualiza parcialmente una lista de precios. Útil para activar/desactivar o modificar vigencia sin reemplazar
         el registro completo.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListPatchRequest'
+              $ref: "#/components/schemas/PriceListPatchRequest"
       responses:
-        '200':
+        "200":
           description: Lista de precios actualizada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /price-lists/{priceListId}/items:
     get:
       tags:
-      - price-list-items
+        - price-list-items
       operationId: listPriceListItems
       summary: Listar ítems de lista de precios
       description: Devuelve los ítems de una lista de precios, permitiendo filtrar por servicio y tipo de habitación.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
-      - $ref: '#/components/parameters/ServiceCode'
-      - $ref: '#/components/parameters/RoomTypeId'
-      - name: active
-        in: query
-        required: false
-        description: Filtra por ítems activos/inactivos (is_active).
-        schema:
-          type: boolean
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/Offset'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
+        - $ref: "#/components/parameters/ServiceCode"
+        - $ref: "#/components/parameters/RoomTypeId"
+        - name: active
+          in: query
+          required: false
+          description: Filtra por ítems activos/inactivos (is_active).
+          schema:
+            type: boolean
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
       responses:
-        '200':
+        "200":
           description: Listado de ítems.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListItemListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListItemListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
-      - price-list-items
+        - price-list-items
       operationId: createPriceListItem
       summary: Crear ítem de lista de precios
-      description: Crea un nuevo ítem dentro de una lista de precios, asociando un servicio cobrable a un precio y vigencia
+      description:
+        Crea un nuevo ítem dentro de una lista de precios, asociando un servicio cobrable a un precio y vigencia
         determinada.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListItemCreateRequest'
+              $ref: "#/components/schemas/PriceListItemCreateRequest"
       responses:
-        '201':
+        "201":
           description: Ítem creado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListItemResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListItemResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /price-lists/{priceListId}/items/{itemId}:
     put:
       tags:
-      - price-list-items
+        - price-list-items
       operationId: updatePriceListItem
       summary: Actualizar ítem (reemplazo)
       description: Actualiza de forma completa un ítem de una lista de precios existente.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
-      - $ref: '#/components/parameters/ItemId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
+        - $ref: "#/components/parameters/ItemId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListItemUpdateRequest'
+              $ref: "#/components/schemas/PriceListItemUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Ítem actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListItemResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListItemResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     patch:
       tags:
-      - price-list-items
+        - price-list-items
       operationId: patchPriceListItem
       summary: Actualizar ítem (parcial)
-      description: Actualiza parcialmente un ítem de la lista de precios, permitiendo modificar su estado o vigencia sin reemplazar
+      description:
+        Actualiza parcialmente un ítem de la lista de precios, permitiendo modificar su estado o vigencia sin reemplazar
         el registro completo.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/PriceListId'
-      - $ref: '#/components/parameters/ItemId'
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/PriceListId"
+        - $ref: "#/components/parameters/ItemId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PriceListItemPatchRequest'
+              $ref: "#/components/schemas/PriceListItemPatchRequest"
       responses:
-        '200':
+        "200":
           description: Ítem actualizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PriceListItemResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PriceListItemResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /pricing/quote:
     get:
       tags:
-      - pricing
+        - pricing
       operationId: getPricingQuote
       summary: Obtener tarifa aplicable (quote)
-      description: Devuelve el precio aplicable para un servicio y tipo de habitación en una fecha específica, resolviendo
+      description:
+        Devuelve el precio aplicable para un servicio y tipo de habitación en una fecha específica, resolviendo
         automáticamente la vigencia correcta de la tarifa.
       parameters:
-      - $ref: '#/components/parameters/XPropertyId'
-      - $ref: '#/components/parameters/ServiceCodeRequired'
-      - $ref: '#/components/parameters/RoomTypeIdOptional'
-      - name: date
-        in: query
-        required: true
-        description: Fecha para la cual se desea resolver la tarifa.
-        schema:
-          type: string
-          format: date
+        - $ref: "#/components/parameters/XPropertyId"
+        - $ref: "#/components/parameters/ServiceCodeRequired"
+        - $ref: "#/components/parameters/RoomTypeIdOptional"
+        - name: date
+          in: query
+          required: true
+          description: Fecha para la cual se desea resolver la tarifa.
+          schema:
+            type: string
+            format: date
       responses:
-        '200':
+        "200":
           description: Tarifa aplicable encontrada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PricingQuoteResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PricingQuoteResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     bearerAuth:
@@ -434,9 +440,9 @@ components:
           type: string
           minLength: 3
           maxLength: 3
-          description: 'ISO-4217 (ej: PEN, USD).'
+          description: "ISO-4217 (ej: PEN, USD)."
       required:
-      - amount
+        - amount
     PriceListCreateRequest:
       type: object
       additionalProperties: false
@@ -455,19 +461,19 @@ components:
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
           default: true
       required:
-      - code
-      - name
-      - validFrom
+        - code
+        - name
+        - validFrom
     PriceListUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/PriceListCreateRequest'
+        - $ref: "#/components/schemas/PriceListCreateRequest"
       description: Reemplazo completo. Incluye los campos gestionables del negocio.
     PriceListPatchRequest:
       type: object
@@ -483,8 +489,8 @@ components:
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
@@ -507,15 +513,15 @@ components:
           maxLength: 100
         description:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
         validFrom:
           type: string
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
@@ -524,17 +530,17 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - propertyId
-      - code
-      - name
-      - validFrom
-      - isActive
-      - createdAt
+        - id
+        - propertyId
+        - code
+        - name
+        - validFrom
+        - isActive
+        - createdAt
     PriceListListResponse:
       type: object
       additionalProperties: false
@@ -542,12 +548,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PriceListResponse'
+            $ref: "#/components/schemas/PriceListResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PriceListItemBase:
       type: object
       additionalProperties: false
@@ -558,8 +564,8 @@ components:
           description: catalog.service.code
         roomTypeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
           description: hotel.room_type.id (nullable si el servicio no depende de tipo de habitación)
         price:
@@ -571,8 +577,8 @@ components:
           default: true
         defaultTaxRate:
           type:
-          - number
-          - 'null'
+            - number
+            - "null"
           multipleOf: 0.01
           minimum: 0
           maximum: 100
@@ -582,22 +588,22 @@ components:
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
           default: true
       required:
-      - serviceCode
-      - price
-      - validFrom
+        - serviceCode
+        - price
+        - validFrom
     PriceListItemCreateRequest:
       allOf:
-      - $ref: '#/components/schemas/PriceListItemBase'
+        - $ref: "#/components/schemas/PriceListItemBase"
     PriceListItemUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/PriceListItemBase'
+        - $ref: "#/components/schemas/PriceListItemBase"
     PriceListItemPatchRequest:
       type: object
       additionalProperties: false
@@ -609,8 +615,8 @@ components:
           type: boolean
         defaultTaxRate:
           type:
-          - number
-          - 'null'
+            - number
+            - "null"
           multipleOf: 0.01
           minimum: 0
           maximum: 100
@@ -619,15 +625,15 @@ components:
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
         roomTypeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
       minProperties: 1
     PriceListItemResponse:
@@ -649,8 +655,8 @@ components:
           maxLength: 30
         roomTypeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         price:
           type: number
@@ -659,16 +665,16 @@ components:
           type: boolean
         defaultTaxRate:
           type:
-          - number
-          - 'null'
+            - number
+            - "null"
           multipleOf: 0.01
         validFrom:
           type: string
           format: date
         validTo:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date
         isActive:
           type: boolean
@@ -677,18 +683,18 @@ components:
           format: date-time
         updatedAt:
           type:
-          - string
-          - 'null'
+            - string
+            - "null"
           format: date-time
       required:
-      - id
-      - priceListId
-      - serviceCode
-      - price
-      - taxIncluded
-      - validFrom
-      - isActive
-      - createdAt
+        - id
+        - priceListId
+        - serviceCode
+        - price
+        - taxIncluded
+        - validFrom
+        - isActive
+        - createdAt
     PriceListItemListResponse:
       type: object
       additionalProperties: false
@@ -696,12 +702,12 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PriceListItemResponse'
+            $ref: "#/components/schemas/PriceListItemResponse"
         meta:
-          $ref: '#/components/schemas/PaginationMeta'
+          $ref: "#/components/schemas/PaginationMeta"
       required:
-      - items
-      - meta
+        - items
+        - meta
     PricingQuoteResponse:
       type: object
       additionalProperties: false
@@ -711,20 +717,20 @@ components:
           maxLength: 30
         roomTypeId:
           type:
-          - integer
-          - 'null'
+            - integer
+            - "null"
           format: int64
         date:
           type: string
           format: date
         price:
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
         taxIncluded:
           type: boolean
         taxRate:
           type:
-          - number
-          - 'null'
+            - number
+            - "null"
           multipleOf: 0.01
           minimum: 0
           maximum: 100
@@ -746,14 +752,14 @@ components:
               format: date
             validTo:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
               format: date
           required:
-          - id
-          - code
-          - name
-          - validFrom
+            - id
+            - code
+            - name
+            - validFrom
         item:
           type: object
           additionalProperties: false
@@ -766,22 +772,22 @@ components:
               format: date
             validTo:
               type:
-              - string
-              - 'null'
+                - string
+                - "null"
               format: date
             isActive:
               type: boolean
           required:
-          - id
-          - validFrom
-          - isActive
+            - id
+            - validFrom
+            - isActive
       required:
-      - serviceCode
-      - date
-      - price
-      - taxIncluded
-      - priceList
-      - item
+        - serviceCode
+        - date
+        - price
+        - taxIncluded
+        - priceList
+        - item
     PaginationMeta:
       type: object
       additionalProperties: false
@@ -796,9 +802,9 @@ components:
           type: integer
           minimum: 0
       required:
-      - limit
-      - offset
-      - total
+        - limit
+        - offset
+        - total
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -809,41 +815,41 @@ components:
           type: string
         details:
           type:
-          - object
-          - array
-          - string
-          - 'null'
+            - object
+            - array
+            - string
+            - "null"
       required:
-      - code
-      - message
+        - code
+        - message
   responses:
     BadRequest:
       description: Solicitud inválida.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: No autenticado/No autorizado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Recurso no encontrado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Conflict:
       description: Conflicto (por ejemplo, código duplicado por propiedad).
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Error inesperado.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
