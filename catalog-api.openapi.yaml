@@ -2,8 +2,7 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Catalog API
   version: 1.2.0
-  description:
-    API de catálogos de referencia. Provee listas de valores usados por otras APIs.
+  description: API de catálogos de referencia. Provee listas de valores usados por otras APIs.
   contact:
     name: Oriana ERP
     email: support@oriana.hotel.erp

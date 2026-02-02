@@ -2,9 +2,7 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Billing API
   version: 1.1.0
-  description:
-    "API de facturación y caja: folios (billing.guest_folio), cargos (billing.folio_charge), pagos (billing.payment)
-    y asignaciones (billing.payment_allocation). Incluye contrato para invoices (fase 2). Requiere header X-Property-Id."
+  description: "API de facturación y caja: folios, cargos, pagos y asignaciones."
   contact:
     name: Oriana ERP
     email: support@oriana.hotel.erp
@@ -392,8 +390,8 @@ paths:
       tags:
         - invoices
       operationId: createInvoice
-      summary: Crear invoice (fase 2)
-      description: Crea una factura o nota de crédito asociada a un folio. (Contrato listo para fase 2).
+      summary: Crear invoice
+      description: Crea una factura o nota de crédito asociada a un folio.
       parameters:
         - $ref: "#/components/parameters/XPropertyId"
       requestBody:
@@ -421,7 +419,7 @@ paths:
       tags:
         - invoices
       operationId: listInvoices
-      summary: Listar invoices (fase 2)
+      summary: Listar invoices
       description: Devuelve el listado de invoices por rango de fechas (invoice_date).
       parameters:
         - $ref: "#/components/parameters/XPropertyId"
@@ -447,7 +445,7 @@ paths:
       tags:
         - invoices
       operationId: getInvoice
-      summary: Obtener invoice (fase 2)
+      summary: Obtener invoice
       description: Devuelve el detalle de una invoice.
       parameters:
         - $ref: "#/components/parameters/XPropertyId"
@@ -470,7 +468,7 @@ paths:
       tags:
         - invoice-items
       operationId: listInvoiceItems
-      summary: Listar ítems de invoice (fase 2)
+      summary: Listar ítems de invoice
       description: Devuelve los ítems de una invoice.
       parameters:
         - $ref: "#/components/parameters/XPropertyId"
@@ -492,7 +490,7 @@ paths:
       tags:
         - invoice-items
       operationId: createInvoiceItem
-      summary: Crear ítem de invoice (fase 2)
+      summary: Crear ítem de invoice
       description: Crea un ítem dentro de una invoice. Puede asociarse a un cargo (folio_charge).
       parameters:
         - $ref: "#/components/parameters/XPropertyId"
