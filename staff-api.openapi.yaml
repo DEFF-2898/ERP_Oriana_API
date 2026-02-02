@@ -2,9 +2,12 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Staff API
   version: 1.1.0
-  description:
-    API para gestión de empleados (staff.employee) y su historial de turnos (staff.employee_shift) y posiciones
-    (staff.employee_position). Requiere header X-Property-Id.
+  description: API para gestión de empleados y su historial de turnos y posiciones.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:

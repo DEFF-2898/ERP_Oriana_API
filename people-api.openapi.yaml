@@ -2,9 +2,12 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - People API
   version: 1.1.0
-  description:
-    API para gestión de personas (core.person), detalles por tipo (core.natural_person, core.legal_entity), documentos
-    (core.person_document) y representantes legales (core.legal_representative).
+  description: API para gestión de personas, detalles por tipo, documentos y representantes legales.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:

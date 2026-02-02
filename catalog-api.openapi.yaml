@@ -3,8 +3,7 @@ info:
   title: Oriana ERP - Catalog API
   version: 1.2.0
   description:
-    API de catálogos de referencia (schema `catalog`). Provee listas de valores usados por otras APIs (People,
-    Staff, Inventory, Guest/Stay, Billing, Pricing).
+    API de catálogos de referencia. Provee listas de valores usados por otras APIs.
   contact:
     name: Oriana ERP
     email: support@example.com

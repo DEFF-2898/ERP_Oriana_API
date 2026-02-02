@@ -2,9 +2,12 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Inventory API
   version: 1.1.0
-  description:
-    API de Inventario para gestión de tipos de habitación (hotel.room_type) y habitaciones (hotel.room). Requiere
-    header X-Property-Id.
+  description: API de Inventario para gestión de tipos de habitación y habitaciones.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:

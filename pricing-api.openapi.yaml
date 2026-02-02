@@ -2,12 +2,14 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Pricing API
   version: 1.1.0
-  description:
-    API para gestión de listas de precios (hotel.price_list), ítems (hotel.price_list_item) y consulta de tarifa
-    aplicable (quote). Requiere header X-Property-Id.
+  description: API para gestión de listas de precios, ítems y consulta de tarifa aplicable.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
-
 tags:
   - name: price-lists
     description: Gestión de listas de precios de la propiedad.
@@ -15,7 +17,6 @@ tags:
     description: Ítems (tarifas) dentro de una lista de precios.
   - name: pricing
     description: Consulta de tarifa aplicable (quote).
-
 security:
   - bearerAuth: []
 paths:

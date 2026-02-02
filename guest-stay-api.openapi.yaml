@@ -3,9 +3,13 @@ info:
   title: Oriana ERP - Guest & Stay API
   version: 1.1.0
   description: API de huéspedes, reservas y estadías. Todas las operaciones son *scoped* a una propiedad vía el header **X-Property-Id**.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
-
 tags:
   - name: guests
     description: Gestión de huéspedes y su información operativa.
@@ -15,7 +19,8 @@ tags:
     description: Gestión de estadías / check-in & check-out.
   - name: stay-guests
     description: Gestión de ocupantes de una estadía.
-
+security:
+  - bearerAuth: []
 paths:
   /guests:
     post:
@@ -1297,5 +1302,3 @@ components:
             $ref: "#/components/schemas/StayGuestResponse"
       required:
         - items
-security:
-  - bearerAuth: []

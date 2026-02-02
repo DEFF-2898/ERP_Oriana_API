@@ -14,17 +14,17 @@ servers:
   - url: /api/v1
 tags:
   - name: folios
-    description: Gestión de folios del huésped (guest_folio).
+    description: Gestión de folios del huésped.
   - name: folio-charges
-    description: Cargos dentro de un folio (folio_charge).
+    description: Cargos dentro de un folio.
   - name: payments
-    description: Registro y consulta de pagos (payment).
+    description: Registro y consulta de pagos.
   - name: payment-allocations
-    description: Asignación de pagos a folios o facturas (payment_allocation).
+    description: Asignación de pagos a folios o facturas.
   - name: invoices
-    description: Facturas y notas de crédito (invoice) - fase 2.
+    description: Facturas y notas de crédito.
   - name: invoice-items
-    description: Ítems de factura (invoice_item) - fase 2.
+    description: Ítems de factura.
 security:
   - bearerAuth: []
 paths:

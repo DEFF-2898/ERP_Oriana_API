@@ -2,14 +2,17 @@ openapi: 3.1.0
 info:
   title: Oriana ERP - Property API
   version: 1.1.0
-  description:
-    API para administración de propiedades/sedes (hotel.property). Permite crear y administrar propiedades con
-    datos generales, país, moneda y dirección.
+  description: API para administración de propiedades/sedes. Permite crear y administrar propiedades con datos generales, país, moneda y dirección.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:
   - name: properties
-    description: Gestión de propiedades (hotel.property).
+    description: Gestión de propiedades.
 security:
   - bearerAuth: []
 paths:

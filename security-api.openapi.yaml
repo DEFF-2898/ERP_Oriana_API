@@ -3,8 +3,12 @@ info:
   title: Oriana ERP - Security API
   version: 1.1.0
   description:
-    API de seguridad para gestión de usuarios (security.user_account), roles (security.role) y asignación de roles
-    por usuario (security.user_role). Si se activa, permite administrar accesos por propiedad (X-Property-Id).
+    API de seguridad para gestión de usuarios, roles y asignación de roles por usuario.
+  contact:
+    name: Oriana ERP
+    email: support@example.com
+  license:
+    name: Proprietary
 servers:
   - url: /api/v1
 tags:
