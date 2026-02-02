@@ -6,7 +6,7 @@ info:
     API de catálogos de referencia. Provee listas de valores usados por otras APIs.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

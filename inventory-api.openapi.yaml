@@ -5,7 +5,7 @@ info:
   description: API de Inventario para gestión de tipos de habitación y habitaciones.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

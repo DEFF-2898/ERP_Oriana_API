@@ -5,7 +5,7 @@ info:
   description: API para gestión de empleados y su historial de turnos y posiciones.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

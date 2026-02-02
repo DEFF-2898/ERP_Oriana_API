@@ -6,7 +6,7 @@ info:
     API de seguridad para gestión de usuarios, roles y asignación de roles por usuario.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

@@ -5,7 +5,7 @@ info:
   description: API de huéspedes, reservas y estadías. Todas las operaciones son *scoped* a una propiedad vía el header **X-Property-Id**.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

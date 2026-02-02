@@ -5,7 +5,7 @@ info:
   description: API para administración de propiedades/sedes. Permite crear y administrar propiedades con datos generales, país, moneda y dirección.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

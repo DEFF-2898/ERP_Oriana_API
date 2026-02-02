@@ -5,7 +5,7 @@ info:
   description: API para gestión de personas, detalles por tipo, documentos y representantes legales.
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:

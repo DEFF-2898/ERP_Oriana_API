@@ -7,7 +7,7 @@ info:
     y asignaciones (billing.payment_allocation). Incluye contrato para invoices (fase 2). Requiere header X-Property-Id."
   contact:
     name: Oriana ERP
-    email: support@example.com
+    email: support@oriana.hotel.erp
   license:
     name: Proprietary
 servers:
