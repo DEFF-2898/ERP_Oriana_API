@@ -52,6 +52,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - employees
@@ -83,6 +85,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /employees/{employeeId}:
     get:
       tags:
@@ -106,6 +110,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     put:
       tags:
         - employees
@@ -138,6 +144,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       tags:
         - employees
@@ -172,6 +180,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /employees/{employeeId}/shifts:
     get:
       tags:
@@ -201,6 +211,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - employee-shifts
@@ -235,6 +247,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /employees/{employeeId}/positions:
     get:
       tags:
@@ -264,6 +278,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - employee-positions
@@ -298,6 +314,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     bearerAuth:
@@ -309,7 +327,7 @@ components:
       name: X-Property-Id
       in: header
       required: true
-      description: Identificador de la propiedad (hotel.property.id).
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
       schema:
         type: integer
         format: int64
@@ -747,20 +765,30 @@ components:
     ErrorResponse:
       type: object
       additionalProperties: false
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type:
-            - object
-            - array
-            - string
-            - "null"
       required:
         - code
         - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.
   responses:
     BadRequest:
       description: Solicitud inválida.
@@ -792,3 +820,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...

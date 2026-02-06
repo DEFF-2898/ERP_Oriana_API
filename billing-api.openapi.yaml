@@ -58,6 +58,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - folios
@@ -83,6 +85,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /folios/{folioId}:
     get:
       tags:
@@ -106,6 +110,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       tags:
         - folios
@@ -138,6 +144,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /folios/{folioId}/charges:
     get:
       tags:
@@ -162,6 +170,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - folio-charges
@@ -194,6 +204,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /folios/{folioId}/charges/{chargeId}:
     put:
       tags:
@@ -230,6 +242,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       tags:
         - folio-charges
@@ -251,6 +265,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /payments:
     post:
       tags:
@@ -281,6 +297,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - payments
@@ -307,6 +325,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /payments/{paymentId}:
     get:
       tags:
@@ -330,6 +350,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /payments/{paymentId}/allocations:
     get:
       tags:
@@ -353,6 +375,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - payment-allocations
@@ -385,6 +409,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoices:
     post:
       tags:
@@ -415,6 +441,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - invoices
@@ -440,6 +468,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoices/{invoiceId}:
     get:
       tags:
@@ -463,6 +493,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoices/{invoiceId}/items:
     get:
       tags:
@@ -486,6 +518,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - invoice-items
@@ -518,6 +552,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     bearerAuth:
@@ -529,11 +565,11 @@ components:
       name: X-Property-Id
       in: header
       required: true
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
       schema:
         type: integer
         format: int64
         minimum: 1
-      description: Identificador de la propiedad (hotel.property.id).
     FolioId:
       name: folioId
       in: path
@@ -719,20 +755,30 @@ components:
     ErrorResponse:
       type: object
       additionalProperties: false
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type:
-            - object
-            - array
-            - string
-            - "null"
       required:
         - code
         - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.
     FolioCreateRequest:
       type: object
       additionalProperties: false
@@ -1684,3 +1730,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...

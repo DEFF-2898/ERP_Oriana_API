@@ -58,6 +58,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - guests
@@ -95,6 +97,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /guests/{guestId}:
     get:
       tags:
@@ -123,6 +127,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
     put:
       tags:
         - guests
@@ -156,6 +166,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
     patch:
       tags:
         - guests
@@ -189,6 +205,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
   /reservations:
     post:
       tags:
@@ -223,6 +245,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - reservations
@@ -259,6 +283,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /reservations/{reservationId}:
     get:
       tags:
@@ -287,6 +313,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
     patch:
       tags:
         - reservations
@@ -321,6 +353,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /reservations/{reservationId}/status:
     patch:
       tags:
@@ -358,6 +392,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /stays:
     post:
       tags:
@@ -392,6 +428,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - stays
@@ -428,6 +466,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /stays/{stayId}:
     get:
       tags:
@@ -456,6 +496,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
   /stays/{stayId}/status:
     patch:
       tags:
@@ -490,6 +536,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
   /stays/{stayId}/checkout:
     post:
       tags:
@@ -521,6 +573,8 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /stays/{stayId}/guests:
     get:
       tags:
@@ -549,6 +603,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
     post:
       tags:
         - stay-guests
@@ -582,6 +642,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
   /stays/{stayId}/guests/{guestId}:
     delete:
       tags:
@@ -607,6 +673,12 @@ paths:
           $ref: "#/components/responses/Error409"
         "422":
           $ref: "#/components/responses/Error422"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      description:
+        Operación de estancias. Mantén el estado de la estadía consistente (check-in/check-out) y valida transiciones
+        (ej. no permitir check-out si hay cargos pendientes, si aplica). En errores, retorna `code` estable y `traceId` para
+        soporte.
 components:
   securitySchemes:
     bearerAuth:
@@ -618,7 +690,7 @@ components:
       name: X-Property-Id
       in: header
       required: true
-      description: Identificador de la propiedad/hotel (hotel.property.id).
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
       schema:
         type: integer
         format: int64
@@ -693,7 +765,17 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
     Error400:
       description: Solicitud inválida.
       content:
@@ -753,7 +835,7 @@ components:
           type:
             - string
             - "null"
-          description: "Id de trazabilidad (para logs)."
+          description: Id de trazabilidad (para logs).
       required:
         - error
         - message
@@ -775,21 +857,22 @@ components:
         - CANCELLED
         - NO_SHOW
         - CHECKED_IN
-      description: "Código de estado (catalog.reservation_status.code)."
+      description: Código de estado (catalog.reservation_status.code).
     StayStatusCode:
       type: string
       enum:
         - ACTIVE
         - CLOSED
         - CANCELLED
-      description: "Código de estado (catalog.stay_status.code)."
+      description: Código de estado (catalog.stay_status.code).
     PersonDocumentCreate:
       type: object
       additionalProperties: false
       properties:
         documentTypeId:
-          $ref: "#/components/schemas/Id64"
-          description: "catalog.document_type.id"
+          allOf:
+            - $ref: "#/components/schemas/Id64"
+          description: catalog.document_type.id
         documentNumber:
           type: string
           minLength: 1
@@ -1039,16 +1122,18 @@ components:
       additionalProperties: false
       properties:
         guestId:
-          $ref: "#/components/schemas/Id64"
-          description: "hotel.guest.id (huésped principal)."
+          allOf:
+            - $ref: "#/components/schemas/Id64"
+          description: hotel.guest.id (huésped principal).
         roomId:
-          $ref: "#/components/schemas/Id64"
-          description: "hotel.room.id"
+          allOf:
+            - $ref: "#/components/schemas/Id64"
+          description: hotel.room.id
         priceListId:
           anyOf:
             - $ref: "#/components/schemas/Id64"
             - type: "null"
-          description: "hotel.price_list.id (opcional)."
+          description: hotel.price_list.id (opcional).
         checkInEstimated:
           $ref: "#/components/schemas/Date"
         checkOutEstimated:
@@ -1163,7 +1248,8 @@ components:
         roomId:
           $ref: "#/components/schemas/Id64"
         primaryGuestId:
-          $ref: "#/components/schemas/Id64"
+          allOf:
+            - $ref: "#/components/schemas/Id64"
           description: hotel.guest.id (se insertará en hotel.stay_guest con is_primary=true).
         numGuests:
           anyOf:
@@ -1302,3 +1388,30 @@ components:
             $ref: "#/components/schemas/StayGuestResponse"
       required:
         - items
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.

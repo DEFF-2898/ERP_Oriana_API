@@ -48,6 +48,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     get:
       tags:
         - people
@@ -73,6 +75,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /people/{personId}:
     get:
       tags:
@@ -95,6 +99,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     put:
       tags:
         - people
@@ -126,6 +132,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       tags:
         - people
@@ -157,6 +165,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /people/{personId}/documents:
     get:
       tags:
@@ -180,6 +190,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - person-documents
@@ -211,6 +223,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /people/{personId}/documents/{documentId}:
     put:
       tags:
@@ -244,6 +258,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       tags:
         - person-documents
@@ -276,6 +292,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /people/{personId}/documents/{documentId}/make-primary:
     post:
       tags:
@@ -303,6 +321,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /legal-entities/{legalEntityPersonId}/representatives:
     get:
       tags:
@@ -326,6 +346,8 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       tags:
         - legal-representatives
@@ -357,6 +379,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /legal-entities/{legalEntityPersonId}/representatives/{representativeId}/deactivate:
     patch:
       tags:
@@ -392,6 +416,8 @@ paths:
           $ref: "#/components/responses/Conflict"
         "500":
           $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     bearerAuth:
@@ -473,6 +499,15 @@ components:
         type: integer
         minimum: 0
         default: 0
+    XPropertyId:
+      name: X-Property-Id
+      in: header
+      required: true
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
   schemas:
     PersonTypeCode:
       type: string
@@ -1063,20 +1098,30 @@ components:
     ErrorResponse:
       type: object
       additionalProperties: false
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type:
-            - object
-            - array
-            - string
-            - "null"
       required:
         - code
         - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.
     UserAccountId:
       type: integer
       format: int64
@@ -1113,3 +1158,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
