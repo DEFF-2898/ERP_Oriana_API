@@ -9,7 +9,10 @@ info:
 
     **Multi-tenant**: la mayoría de operaciones se ejecutan en el contexto de una propiedad (`hotel.property.id`).
 
-    Por consistencia con el resto de APIs del ERP, este contexto se envía en el header `X-Property-Id`."
+    Por consistencia con el resto de APIs del ERP, este contexto se envía en el header `X-Property-Id`.
+
+
+    Nota: `/auth/login`, `/auth/refresh` y `/auth/logout` son endpoints públicos y **no requieren** `Authorization` ni `X-Property-Id`."
   contact:
     name: Oriana ERP
     email: support@oriana.hotel.erp
@@ -38,8 +41,6 @@ paths:
         - El `accessToken` se envía en `Authorization: Bearer <token>` para consumir APIs protegidas.
 
         - El `refreshToken` sirve para renovar el access token sin volver a ingresar credenciales."
-      parameters:
-        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
@@ -65,6 +66,7 @@ paths:
           $ref: "#/components/responses/LockedError"
         default:
           $ref: "#/components/responses/ErrorResponse"
+      security: []
   /auth/refresh:
     post:
       tags:
@@ -78,8 +80,6 @@ paths:
         Recomendación de seguridad: usar **refresh token rotation** y revocar el refresh token
 
         ante sospecha de compromiso o cierre de sesión."
-      parameters:
-        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
@@ -97,6 +97,7 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         default:
           $ref: "#/components/responses/ErrorResponse"
+      security: []
   /auth/logout:
     post:
       tags:
@@ -104,8 +105,6 @@ paths:
       operationId: logout
       summary: Cerrar sesión
       description: Invalida el `refreshToken` (y cualquier sesión asociada, según la estrategia de implementación).
-      parameters:
-        - $ref: "#/components/parameters/XPropertyId"
       requestBody:
         required: true
         content:
@@ -119,6 +118,7 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         default:
           $ref: "#/components/responses/ErrorResponse"
+      security: []
   /auth/me:
     get:
       tags:
